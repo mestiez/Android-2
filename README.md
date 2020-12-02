@@ -20,6 +20,9 @@ Then, you can simply run
 
 and replace `[address]` with the address of your server. This has to be run directly from inside the output folder to ensure the `bot_token` file is found.
 
+**IMPORTANT: THERE IS NO SECURITY IN PLACE YET. Anyone can access the control panel if they have the address.
+Host it locally or implement some sort of authentication**
+
 ### Client
 
 The client is built using Angular (I am sorry) so you need NodeJS and the Angular CLI to build it. Before building it, edit the `src/app/models.ts` file.
