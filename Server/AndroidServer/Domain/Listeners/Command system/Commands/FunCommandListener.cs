@@ -21,6 +21,12 @@ namespace AndroidServer.Domain.Listeners.Commands
             await parameters.SocketMessage.Channel.SendMessageAsync("<3");
         }
 
+        [Command(CommandAccessLevel.Level2, "lego", "atst", "at-st")]
+        public async Task Lego(CommandParameters parameters)
+        {
+            await parameters.Reply("https://i.imgur.com/YsUVChu.png");
+        }
+
         [Command(CommandAccessLevel.Level2, "what is", "whats", "what's", "define", "what is the definition of")]
         public async Task Define(CommandParameters parameters)
         {
