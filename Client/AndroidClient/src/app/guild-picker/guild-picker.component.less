@@ -1,0 +1,28 @@
+.guild-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.guild-button {
+  @height: 48px;
+
+  width: 256px;
+  height: @height;
+  display: grid;
+
+  grid-template-columns: @height 1fr;
+  grid-template-rows: 100%;
+  justify-items: stretch;
+  align-items: stretch;
+
+  margin-bottom: 10px;
+}
+
+.guild-button>span {
+  align-self: center;
+  margin-left: 10px;
+}

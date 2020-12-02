@@ -1,0 +1,209 @@
+<div class="fill instance-editor">
+  <div class="sidebar">
+
+    <div class="guild-name">
+      <img [src]="guildService.currentGuild.iconURL || noImage">
+      <span [ngStyle]="{'color': currentInstanceActive ? null : 'gray'}">{{guildService.currentGuild.name}}</span>
+      <app-check-box title="Set global instance active state" [checked]="currentInstanceActive"
+        (checkChange)="setInstanceActive($event)"></app-check-box>
+    </div>
+
+    <div class="channel-selector">
+      <div class="channel-button button" *ngFor="let channel of channels" [ngStyle]="{'order': channel.position}"
+        (click)="setChannel(channel)" [attr.selected]="selectedChannel === channel">
+        <ng-container [ngSwitch]="channel.channelType">
+          <span *ngSwitchCase="'voice'" class="voice-channel">
+            [VOICE] {{channel.name}}
+          </span>
+          <span *ngSwitchCase="'text'" class="text-channel">
+            #{{channel.name}}
+          </span>
+        </ng-container>
+      </div>
+    </div>
+
+    <app-important-controls></app-important-controls>
+  </div>
+
+  <ng-container *ngIf="selectedChannel">
+    <div class="channel-editor-title">
+      {{selectedChannel.name}} <span class="dim" style="float: right;">{{selectedChannel.channelType}} channel</span>
+    </div>
+
+    <div class="listeners panel">
+      <div class="listener-list">
+        <ng-container *ngIf="!selectedChannelListeners || selectedChannelListeners.length == 0">
+          <span class="dim">This channel has no listeners</span>
+        </ng-container>
+
+        <div class="listener-entry" *ngFor="let listener of selectedChannelListeners" [title]="listener.id"
+          [attr.global]="listener.globalListener"
+          [attr.active]="listener.active"
+          [attr.selected]="selectedListener && selectedListener.id === listener.id" (click)="selectListener(listener)">
+          <span>
+            {{listener.displayName}}
+            <span *ngIf="listener.globalListener" class="dim">[GLOBAL@{{listener.channelName}}]</span>
+          </span>
+          <app-check-box [checked]="listener.active" (checkChange)="setListenerState(listener, $event)"
+            title="Toggle active state"></app-check-box>
+        </div>
+      </div>
+
+      <div class="listener-add-menu">
+        <select [(ngModel)]="selectedAddListenerTypeID">
+          <option [ngValue]="listenerType.typeID" *ngFor="let listenerType of listenerTypes">{{listenerType.typeName}}
+          </option>
+        </select>
+        <div class="button center" (click)="addListener(selectedAddListenerTypeID)">
+          ADD
+        </div>
+      </div>
+    </div>
+
+    <div class="manual-override panel" [ngClass]="{'disabled': selectedChannel.channelType !== 'text'}">
+      <span>Send message to {{selectedChannel.name}}</span>
+      <div class="message-input">
+        <div style="display: flex; flex-direction:column; gap: 15px;">
+          <textarea [(ngModel)]="sendMessageInfo.message" style="resize: none; height: 15vh"
+            (keydown)="handleMessageInput($event)" placeholder="message text"></textarea>
+          <input id="preview" type="file" (change)="setMessageFile($event)" [(ngModel)]="sendMessageInfo.fileName" />
+        </div>
+        <div class="button center" (click)="say()">SEND</div>
+      </div>
+    </div>
+
+    <div class="listener-settings panel">
+      <ng-container *ngIf="selectedListener && selectedListenerUI; else noSelectedListener">
+        <span class="dim">{{(selectedListener.active ? '[O] ' : '[/] ')}}</span>
+        <span>{{selectedListener.name}} </span>
+        <span class="dim">[{{selectedListener.id}}]</span>
+
+        <div class="listener-ui-list">
+          <div class="listener-ui" *ngFor="let item of selectedListenerUI.variables" [title]="item.name"
+            [ngSwitch]="item.type">
+            <span>{{item.name}}</span>
+
+            <!--Number input-->
+            <ng-container *ngSwitchCase="1">
+              <input type="number" [value]="selectedListenerSettings[item.name] || 0"
+                (input)="setListenerSetting(item, $event.target.value)">
+            </ng-container>
+
+            <!--String input-->
+            <ng-container *ngSwitchCase="2">
+              <input type="text" [value]="selectedListenerSettings[item.name] || ''"
+                (change)="setListenerSetting(item, $event.target.value.toString())">
+            </ng-container>
+
+            <!--Bool input-->
+            <ng-container *ngSwitchCase="3">
+              <app-check-box [checked]="selectedListenerSettings[item.name]"
+                (checkChange)="setListenerSetting(item, $event)">
+              </app-check-box>
+            </ng-container>
+
+            <!--Text channel input-->
+            <ng-container *ngSwitchCase="4">
+              <select [(ngModel)]="selectedListenerSettings[item.name]"
+                (ngModelChange)="setListenerSetting(item, $event)" style="padding: 5px;">
+                <option *ngFor="let channel of textChannels" [ngValue]="channel.id">{{channel.name}}</option>
+              </select>
+            </ng-container>
+
+            <!--Voice channel input-->
+            <ng-container *ngSwitchCase="5">
+              <select [(ngModel)]="selectedListenerSettings[item.name]"
+                (ngModelChange)="setListenerSetting(item, $event)" style="padding: 5px;">
+                <option *ngFor="let channel of voiceChannels" [ngValue]="channel.id">{{channel.name}}</option>
+              </select>
+            </ng-container>
+
+            <!--Role input-->
+            <ng-container *ngSwitchCase="6">
+              <select [(ngModel)]="selectedListenerSettings[item.name]"
+                (ngModelChange)="setListenerSetting(item, $event)" style="padding: 5px;">
+                <option *ngFor="let role of roles" [ngValue]="role.id">{{role.name}}</option>
+              </select>
+            </ng-container>
+
+            <!--Text area input-->
+            <ng-container *ngSwitchCase="7">
+              <textarea style="resize: vertical; height: 100px" [value]="selectedListenerSettings[item.name] || ''"
+                (change)="setListenerSetting(item, $event.target.value.toString())"></textarea>
+            </ng-container>
+
+            <!--Emote input-->
+            <ng-container *ngSwitchCase="8">
+              <select [(ngModel)]="selectedListenerSettings[item.name]"
+                (ngModelChange)="setListenerSetting(item, $event)" style="padding: 5px;">
+                <option *ngFor="let emote of emotes" [ngValue]="emote.id">{{emote.name}}</option>
+              </select>
+            </ng-container>
+
+          </div>
+
+          <div
+            style="display: flex; flex-direction: row; justify-content: center; height: 32px; align-items: stretch; margin-top: 5px;">
+            <div class="button center" style="padding: 15px; color: red;" (click)="removeListener(selectedListener.id)">
+              REMOVE LISTENER
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+      <ng-template #noSelectedListener>
+        <span class="dim">No listener selected</span>
+      </ng-template>
+    </div>
+
+    <div class="response-filter panel">
+      <ng-container *ngIf="selectedResponseFilters; else noResponseFilter">
+        <div class="settings">
+          <span>Use blacklist</span>
+          <app-check-box [checked]="selectedResponseFilters.blacklist"
+            (checkChange)="selectedResponseFilters.blacklist = $event; saveResponseFilter()"></app-check-box>
+        </div>
+        <div class="role-whitelist whitelist">
+
+          <span>Role {{selectedResponseFilters.blacklist ? 'black' : 'white'}}list</span>
+          <div class="entries">
+            <div class="entry" [ngStyle]="{'color': role.color}" *ngFor="let role of selectedResponseFilters.roles">
+              {{role.name}} <span class="button center" (click)="removeResponseRole(role)"
+                [title]="'Remove ' + role.name + ' from whitelist'">remove</span>
+            </div>
+          </div>
+          <div
+            style="display: grid; grid-template-columns: 1fr 48px; align-items: stretch; justify-items: stretch; height: 32px; gap:5px;">
+            <select [(ngModel)]="selectedResponseRole">
+              <option [ngValue]="role" *ngFor="let role of roles">{{role.name}}</option>
+            </select>
+            <div class="button center" (click)="addResponseRole(selectedResponseRole)">ADD</div>
+          </div>
+        </div>
+
+        <div class="user-whitelist whitelist">
+
+          <span>User {{selectedResponseFilters.blacklist ? 'black' : 'white'}}list</span>
+          <div class="entries">
+            <div class="entry" *ngFor="let user of selectedResponseFilters.users">
+              <span>{{user.username}}<span class="dim">#{{user.discriminator}}</span></span>
+              <span class="button center" [title]="'Remove ' + user.username + ' from whitelist'"
+                (click)="removeResponseUser(user)">remove</span>
+            </div>
+          </div>
+          <div
+            style="display: grid; grid-template-columns: 1fr 48px; align-items: stretch; justify-items: stretch; height: 32px; gap:5px;">
+            <input type="text" [(ngModel)]="selectedResponseUserID" placeholder="USER ID"
+              (keydown)="handleUserInput($event)">
+            <div class="button center" (click)="addResponseUser(selectedResponseUserID)">ADD</div>
+          </div>
+
+        </div>
+
+      </ng-container>
+      <ng-template #noResponseFilter>
+        <span class="dim">No listener selected</span>
+      </ng-template>
+    </div>
+  </ng-container>
+</div>

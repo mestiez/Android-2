@@ -1,0 +1,241 @@
+@sidebar-width: 350px;
+@header-height: 24px;
+
+.instance-editor {
+
+  display: grid;
+  grid-template-columns: @sidebar-width 1fr 1fr;
+  grid-template-rows: @header-height minmax(0, 1fr) 30%;
+  grid-template-areas:
+    "sidebar header             header"
+    "sidebar listeners          listener-settings"
+    "sidebar manual-override    response-filter"
+  ;
+
+  justify-items: stretch;
+  align-items: stretch;
+
+  gap: 10px;
+  padding: 10px;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background: rgba(0, 0, 0, 0.1);
+
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+
+  .guild-name {
+    padding: 15px;
+    color: lime;
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 32px;
+      width: 32px;
+      margin-right: 10px
+    }
+
+    app-check-box {
+      margin-left: auto;
+    }
+  }
+}
+
+.text-channel,
+.voice-channel {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.channel-selector {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: auto;
+}
+
+.channel-button {
+  padding: 5px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &[selected=true] {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.channel-editor-title {
+  grid-area: header;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.05);
+  // outline: 1px solid rgba(0,0,0,0.5);
+  padding: 5px;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.listeners {
+  grid-area: listeners;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: minmax(0, 1fr) 32px;
+  gap: 10px;
+
+  .listener-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow-y: auto;
+    gap: 10px;
+
+    .listener-entry {
+      background: rgba(0, 0, 0, 0.3);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      // min-height: 24px;
+      user-select: none;
+      padding: 6px;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      &[selected=true] {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      // &[global=true] {
+      //    text-decoration: underline;
+      //    border-bottom: 1px solid white;
+      // }
+
+      &[active=false] {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .listener-add-menu {
+    display: grid;
+    grid-template-columns: 1fr 48px;
+    grid-template-rows: 100%;
+    justify-items: stretch;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+
+.listener-settings {
+  grid-area: listener-settings;
+  overflow: auto;
+
+  .listener-ui-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  .listener-ui {
+    padding: 16px 5px;
+    background: rgba(255, 255, 255, 0.01);
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 50%;
+    gap: 10px;
+  }
+}
+
+.manual-override {
+  grid-area: manual-override;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+
+  .message-input {
+    width: 70%;
+    height: auto;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 100%;
+  }
+}
+
+.response-filter {
+  grid-area: response-filter;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "settings settings"
+    "roles users";
+
+  .settings {
+    padding: 16px 9px;
+    grid-area: settings;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .whitelist {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto 1fr auto;
+    gap: 5px;
+    padding: 5px;
+
+    &[disabled=true] {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .entries {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: auto;
+      gap: 5px;
+      background-color: rgba(0, 0, 0, 0.1);
+
+      .entry {
+        padding: 5px;
+        background: rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+
+        .button {
+          width: 75px;
+          height: 32px;
+          color: white;
+        }
+      }
+    }
+  }
+}

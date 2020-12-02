@@ -1,0 +1,38 @@
+.display {
+  background: black;
+  color: white;
+  height: 200px;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column-reverse;
+  overflow-y: auto;
+}
+
+.notification {
+  padding: 5px;
+  overflow-wrap: break-word;
+
+  .prefix {
+    margin-right: 1em;
+  }
+
+  .message {
+    opacity: 0.8;
+  }
+
+  &:not(:first-child){
+      opacity: 0.5;
+  }
+
+  &[level=info] {
+    color: white;
+  }
+
+  &[level=warn] {
+    color: rgb(255, 177, 103);
+  }
+
+  &[level=err] {
+    color: red;
+  }
+}

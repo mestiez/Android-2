@@ -1,0 +1,7 @@
+<ng-container *ngIf="guildManager.hasCurrentGuild; else guildPickerTemplate">
+  <app-instance-editor></app-instance-editor>
+</ng-container>
+<ng-template #guildPickerTemplate>
+  <app-guild-picker></app-guild-picker>
+</ng-template>
+<app-dialog-screen></app-dialog-screen>

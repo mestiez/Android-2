@@ -1,0 +1,137 @@
+@font-face {
+  font-family: dos;
+  src: url('assets/ModernDOS8x16.ttf');
+}
+
+@background: #27282F;
+@foreground: #FFF;
+
+html,
+body {
+  font-family: 'dos', monospace;
+  background: @background;
+  color: @foreground;
+
+  text-rendering: geometricPrecision;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: normal;
+  margin: unset;
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.button,
+.button:active {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  user-select: none;
+
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.button.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.dim {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+select {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0.1);
+  font: inherit;
+  color: @foreground;
+
+  option {
+    background-color: black;
+  }
+}
+
+input,
+textarea {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0.1);
+  font: inherit;
+  color: @foreground;
+
+  &[type=text],
+  &[type=number] {
+    padding: 5px;
+  }
+}
+
+button {
+  .button();
+}
+
+.button.red {
+  color: red;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #d6d6d6;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-track:active {
+  background: #0d0d0d;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}

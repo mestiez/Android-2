@@ -1,0 +1,23 @@
+.notification-section {
+  max-width: 350px;
+  overflow-x: hidden;
+}
+
+.power-controls {
+  height: 64px;
+  display: grid;
+
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  justify-items: stretch;
+  align-items: stretch;
+
+  grid-template-areas:
+    "save delete"
+    "shutdown shutdown";
+
+  .button {
+    height: 100%;
+    text-align: center;
+  }
+}

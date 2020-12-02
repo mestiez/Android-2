@@ -1,0 +1,835 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Domain</name>
+    </assembly>
+    <members>
+        <member name="T:AndroidServer.Domain.AndroidInstance">
+            <summary>
+            An instance of Android that lives in a guild
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.Active">
+            <summary>
+            Active state of the entire instance
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.GuildID">
+            <summary>
+            ID of the guild this instance is connected to
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.Client">
+            <summary>
+            The Discord client that this instance uses. This is actually a static value but is left an instance member in case this changes in the future
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.Listeners">
+            <summary>
+            The raw list of listeners that live in this instance. Generally should not be edited directly but is left accesible in case you need to edit it anyway
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.EveryoneRole">
+            <summary>
+            The @everyone role for the guild
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.Guild">
+            <summary>
+            The guild
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidInstance.Moderation">
+            <summary>
+            The moderation manager. <b>This won't function correctly unless configured via the client using a <see cref="T:AndroidServer.Domain.Listeners.Commands.ModerationCommandListener"/></b>
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.#ctor(System.UInt64)">
+            <summary>
+            Construct an instance
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.AddListener(System.Type,System.UInt64)">
+            <summary>
+            Add a new listener of the given type to the given channel
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.RemoveListener(AndroidServer.Domain.AndroidListener)">
+            <summary>
+            Remove a specific listener. <b>This does NOT call <see cref="M:AndroidServer.Domain.AndroidListener.OnDelete"/></b>
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.GetListeners``1">
+            <summary>
+            Get listeners by generic type parameter
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.GetListener``1">
+            <summary>
+            Get a listener by generic type parameter
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.Shutdown">
+            <summary>
+            Tell all listeners to shut down
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidInstance.Ask(System.UInt64,Discord.IMessageChannel,System.Func{Discord.WebSocket.SocketMessage,System.Threading.Tasks.Task},System.String)">
+            <summary>
+            Make this instance ask a user a question. The given delegate will be invoked once the user responds
+            </summary>
+            <param name="userID">ID of the user to ask something</param>
+            <param name="channel">Channel in which to ask it</param>
+            <param name="function">Function to invoke when the user replies</param>
+            <param name="message">Actual question text to ask, can be null</param>
+        </member>
+        <member name="T:AndroidServer.Domain.AndroidListener">
+            <summary>
+            Base class for any listener
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.Active">
+            <summary>
+            Listener active state
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.Android">
+            <summary>
+            Reference to the parent instance
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.ChannelID">
+            <summary>
+            ID of the channel that this listener lives in
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.DisplayName">
+            <summary>
+            Display name in the client interface. Can be null
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.GlobalListener">
+            <summary>
+            Listener global state. This will make the listener respond to events in all channels
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.ID">
+            <summary>
+            Unique ID of this listener
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.ResponseFilters">
+            <summary>
+            Response filters for the listener. Stores black-/whitelist
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.#ctor(AndroidServer.Domain.AndroidInstance,System.UInt64)">
+            <summary>
+            Construct a listener
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.#ctor(AndroidServer.Domain.AndroidInstance)">
+            <summary>
+            Construct a listener
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidListener.Name">
+            <summary>
+            Default name of the listener and also the read-only name of the listener
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnMessage(Discord.WebSocket.SocketMessage)">
+            <summary>
+            Called when a message is sent to a channel this listener is listening to. Base class does nothing here
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnMessageDeleted(Discord.IMessage)">
+            <summary>
+            Called when a message is deleted in a channel this listener is listening to. Base class does nothing here
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnMessageEdited(Discord.IMessage)">
+            <summary>
+            Called when a message is edited in a channel this listener is listening to. Base class does nothing here
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.Initialise">
+            <summary>
+            Called when the Android instance is being initialised
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnDelete">
+            <summary>
+            Called when this listener is deleted
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnShutdown">
+            <summary>
+            Called when the server is being shut down
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnEnable">
+            <summary>
+            Called when this listener is enabled
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnDisable">
+            <summary>
+            Called when this listener is disabled
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidListener.OnPropertyChange(System.String,System.Object)">
+            <summary>
+            Called when a property of this listener is changed by the client
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.AndroidModerationManager">
+            <summary>
+            Manages mutes and channel bans for an Android instance
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidModerationManager.Guild">
+            <summary>
+            Associated guild
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidModerationManager.MutedRoleID">
+            <summary>
+            The ID of the mute role. Usually set by <see cref="T:AndroidServer.Domain.Listeners.Commands.ModerationCommandListener"/>
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.AndroidModerationManager.MutesByUser">
+            <summary>
+            Raw mute entries by user ID. Should not be directly edited
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.#ctor(AndroidServer.Domain.AndroidInstance)">
+            <summary>
+            Construct a moderation manager
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.Initialise">
+            <summary>
+            Initialise the manager
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.Unmute(Discord.IGuildUser)">
+            <summary>
+            Unmute a user
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.Mute(Discord.IGuildUser,Discord.ITextChannel,System.TimeSpan)">
+            <summary>
+            Mute a user
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.SetChannelBan(Discord.IGuildChannel,Discord.IGuildUser,System.Boolean,System.Collections.Generic.IEnumerable{Discord.IGuildChannel})">
+            <summary>
+            Set a channel specific ban. This will fail if there is no role that exists specifically for this channel ban
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.AndroidService">
+            <summary>
+            The global bot service
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidService.Instance">
+            <summary>
+            Main instance
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.AndroidService.Client">
+            <summary>
+            The Discord client
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.AndroidService.AndroidInstances">
+            <summary>
+            All existing Android instances
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.#ctor">
+            <summary>
+            Construct a service
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.StartDiscordLoop">
+            <summary>
+            Start the main Discord loop
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.FindListener(System.String)">
+            <summary>
+            Find a listener by ID
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.GetChannelsFrom(System.UInt64)">
+            <summary>
+            Get all the channel infos for a guild
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.GetGuildInfos">
+            <summary>
+            Get all available guild infos
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidService.Stop">
+            <summary>
+            Save all instances and stop everything
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.AndroidState">
+            <summary>
+            The serialisable state of an <see cref="T:AndroidServer.Domain.AndroidInstance"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidState.Active">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidInstance.Active"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidState.Listeners">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidInstance.Listeners"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.AndroidState.MutedUsers">
+            <summary>
+            <see cref="F:AndroidServer.Domain.AndroidModerationManager.MutesByUser"/>
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.AndroidStateSerialiser">
+            <summary>
+            Utility class that can save and load an <see cref="T:AndroidServer.Domain.AndroidState"/>
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.AndroidStateSerialiser.BasePath">
+            <summary>
+            Base path for the used file
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidStateSerialiser.Save(AndroidServer.Domain.AndroidInstance)">
+            <summary>
+            Save an instance to the state files
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidStateSerialiser.Load(System.UInt64,AndroidServer.Domain.AndroidState@)">
+            <summary>
+            Load an instance by guild ID from the state files
+            </summary>
+            <param name="ID">guild ID</param>
+            <param name="result">resulting state</param>
+            <returns>Was the operation successful?</returns>
+        </member>
+        <member name="M:AndroidServer.Domain.AndroidStateSerialiser.SaveAll(AndroidServer.Domain.AndroidService)">
+            <summary>
+            Save all instances in the given service to the state files
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.HideListenerBaseAttribute">
+            <summary>
+            Attribute that can be applied to a listener to hide the base properties from <see cref="T:AndroidServer.Domain.AndroidListener"/> from the client. Useful to force a listener to be global or non-global
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.IdentityGen">
+            <summary>
+            Identity generator
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.IdentityGen.Generate">
+            <summary>
+            Generate a unique ID string
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.CommandAttribute">
+            <summary>
+            Tells the command system that a method is a command
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.Listeners.Commands.CommandAttribute.Addressables">
+            <summary>
+            All ways to address the command. The method name is ignored
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.Listeners.Commands.CommandAttribute.AccessLevel">
+            <summary>
+            Minimum required access level
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.CommandAccessLevel">
+            <summary>
+            Access level of a user as configured by the client
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.CommandContainerListener">
+            <summary>
+            Abstract class that registers its methods as commands when <see cref="T:AndroidServer.Domain.Listeners.Commands.CommandAttribute"/> is applied to them. Does nothing if the channel does not have a <see cref="T:AndroidServer.Domain.Listeners.Commands.CommandListener"/>
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.Listeners.Commands.CommandContainerListener.RetrieveCommands">
+            <summary>
+            Gets all valid command methods from this type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.CommandListener">
+            <summary>
+            Listens for commands registed by <see cref="T:AndroidServer.Domain.Listeners.Commands.CommandContainerListener"/>s
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.BasicCommandListener">
+            <summary>
+            Basic bot commands with no significant purpose
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.DebugCommandListener">
+            <summary>
+            Debug commands
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.FunCommandListener">
+            <summary>
+            """Funny""" commands
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.ModerationCommandListener">
+            <summary>
+            All moderation commands. Also where the mute role is configured by the client
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.ForbiddenWordListener">
+            <summary>
+            Deletes a message that contains specific text
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.MentionSpamListener">
+            <summary>
+            Mutes a user when they spam ping
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.PinListener">
+            <summary>
+            Sends messages when a message is pinned
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.RuleRecallListener">
+            <summary>
+            Recalls rules when a rule is mentioned
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.SuggestionsListener">
+            <summary>
+            A listener that registers suggestions and ranks them using emote-voting
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.UserPresenceListener">
+            <summary>
+            Sends join/leave/ban/unban messages to a channel
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.WorkshopLinkListener">
+            <summary>
+            Only allows Steam Workshop links in the channel
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ListenerTypes">
+            <summary>
+            Utility struct that detects all listener types in the given assemblies
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.ListenerTypes.RegisterAssembly(System.Reflection.Assembly)">
+            <summary>
+            Registers an assembly to scan for listener types
+            </summary>
+            <param name="asm"></param>
+        </member>
+        <member name="M:AndroidServer.Domain.ListenerTypes.GetListenerTypes">
+            <summary>
+            Get all listener types
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.ListenerTypes.GetListenerType(System.Type)">
+            <summary>
+            Get a listener type structure from a type instance
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.ListenerTypes.GetRawType(System.String)">
+            <summary>
+            Get the raw <see cref="T:System.Type"/> instance from a listener type ID
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ChannelInfo">
+            <summary>
+            Serialisable information about a channel
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.ChannelType">
+            <summary>
+            Text or Voice channel?
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.Position">
+            <summary>
+            Position in the channel list
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ChannelInfo.CategoryID">
+            <summary>
+            ID of the parent category
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.EmoteInfo">
+            <summary>
+            Serialisable emote info
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.EmoteInfo.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.EmoteInfo.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.EmoteInfo.URL">
+            <summary>
+            URL to the emote image
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.GuildInfo">
+            <summary>
+            Serialisable guild info
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.GuildInfo.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.GuildInfo.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.GuildInfo.IconURL">
+            <summary>
+            URL to the guild icon
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ListenerInfo">
+            <summary>
+            Serialisable structure that holds listener information
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.Active">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.Active"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.Name">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.Name"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.DisplayName">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.DisplayName"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.ID">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.ID"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.GlobalListener">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.GlobalListener"/>
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.ListenerType">
+            <summary>
+            Type info of the listener
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerInfo.ChannelID">
+            <summary>
+            <see cref="P:AndroidServer.Domain.AndroidListener.ChannelID"/>
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.ListenerInfo.Create(AndroidServer.Domain.AndroidListener)">
+            <summary>
+            Construct a <see cref="T:AndroidServer.Domain.ListenerInfo"/> from a listener
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ListenerType">
+            <summary>
+            Serialisable structure that holds primitive identifying information about a listener type
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerType.TypeName">
+            <summary>
+            Type name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerType.TypeID">
+            <summary>
+            Type ID
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ListenerUIEntry">
+            <summary>
+            Serialisable structure that holds information specific to a single exposed listener property
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerUIEntry.Name">
+            <summary>
+            Identifying property name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerUIEntry.Type">
+            <summary>
+            Type of the property
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ListenerUIInfo">
+            <summary>
+            Serialisable structure that holds all listener UI entries
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ListenerUIInfo.Variables">
+            <summary>
+            All UI entries
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.ResponseFilters">
+            <summary>
+            Structure that holds a black-/whitelist
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ResponseFilters.Blacklist">
+            <summary>
+            Should the filter be treated as a blacklist? It will be treated as a whitelist if this value is set to false. True by default
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ResponseFilters.Users">
+            <summary>
+            Users in the black-/whitelist
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.ResponseFilters.Roles">
+            <summary>
+            Roles in the black-/whitelist
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.ResponseFilters.PassesFilter(Discord.IGuildUser,Discord.IMessage)">
+            <summary>
+            Does the given user and message pass the filter?
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.RoleInfo">
+            <summary>
+            Serialisable role information
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.RoleInfo.ID">
+            <summary>
+            Role ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.RoleInfo.Name">
+            <summary>
+            Role name
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.RoleInfo.Color">
+            <summary>
+            Role colour
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.SayInfo">
+            <summary>
+            Serialisable information about a message sent to the server via the client
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.SayInfo.Message">
+            <summary>
+            Content
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.SayInfo.FileName">
+            <summary>
+            Optional filename
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.SayInfo.FileB64">
+            <summary>
+            Optional file data encoded as a base64 string
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.UiVariableTypeAttribute">
+            <summary>
+            Applying this attribute to a property will make it show up in the client
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.UiVariableTypeAttribute.VariableType">
+            <summary>
+            Type of the value
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.UiVariableTypeAttribute.#ctor(AndroidServer.Domain.VariableType)">
+            <summary>
+            Tells the client that this is en editable value with a type
+            </summary>
+            <param name="variableType"></param>
+        </member>
+        <member name="T:AndroidServer.Domain.UserInfo">
+            <summary>
+            Serialisable information about a guild user
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.UserInfo.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.UserInfo.Username">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.UserInfo.Discriminator">
+            <summary>
+            Discriminator value
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.UserInfo.Nickname">
+            <summary>
+            Guild nickname
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.VariableType">
+            <summary>
+            Variable type for sending to the client
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.Unknown">
+            <summary>
+            ???
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.Number">
+            <summary>
+            A float
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.String">
+            <summary>
+            Text
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.Boolean">
+            <summary>
+            Boolean
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.TextChannel">
+            <summary>
+            String with a text channel ID
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.VoiceChannel">
+            <summary>
+            String with a voice channel ID
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.RoleID">
+            <summary>
+            String with a role ID
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.TextArea">
+            <summary>
+            Text but it will be a big multiline editor
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.VariableType.EmoteID">
+            <summary>
+            String with an emote ID
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.MuteEntry">
+            <summary>
+            An entry in the mute list
+            </summary>
+        </member>
+        <member name="M:AndroidServer.Domain.MuteEntry.#ctor(System.UInt64,System.UInt64,System.UInt64,System.DateTime)">
+            <summary>
+            Construct a mute entry
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.MuteEntry.UserID">
+            <summary>
+            Muted user ID
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.MuteEntry.ChannelID">
+            <summary>
+            ID of the channel where the user was muted
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.MuteEntry.GuildID">
+            <summary>
+            ID of the guild in which the mute took place
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.MuteEntry.Expiration">
+            <summary>
+            When the mute will end
+            </summary>
+        </member>
+        <member name="T:Domain.Utilities">
+            <summary>
+            Utilities specifically useful to Android
+            </summary>
+        </member>
+        <member name="M:Domain.Utilities.SendTextAsFile(Discord.IMessageChannel,System.String,System.String)">
+            <summary>
+            Send a text file as a Discord message
+            </summary>
+        </member>
+        <member name="M:Domain.Utilities.HttpGet``1(System.String)">
+            <summary>
+            Simple HTTP get request
+            </summary>
+        </member>
+        <member name="M:Domain.Utilities.PickRandom``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Pick random entry from an <see cref="T:System.Collections.Generic.IList`1"/>
+            </summary>
+        </member>
+        <member name="M:Domain.Utilities.ParseTimeFromText(System.String)">
+            <summary>
+            Get a <see cref="T:System.TimeSpan"/> from a string. Supports any whole number followed by second, minute, hour, day, week, or year
+            </summary>
+            <returns>The parsed time duration, or null when none is found</returns>
+        </member>
+    </members>
+</doc>

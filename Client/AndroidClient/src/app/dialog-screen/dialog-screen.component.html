@@ -1,0 +1,11 @@
+<div class="content" *ngIf="dialogService.currentDialog">
+  <div class="confirmation">
+    <div>
+      {{dialogService.currentDialog?.question || 'Are you sure?'}}
+    </div>
+    <div class="buttons">
+      <div class="button center" (click)="dialogService.currentDialog.action(); closeDialog();">PROCEED</div>
+      <div class="button center emphasis" style="width: 80px" (click)="closeDialog()">CANCEL</div>
+    </div>
+  </div>
+</div>

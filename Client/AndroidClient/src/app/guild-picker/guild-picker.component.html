@@ -1,0 +1,21 @@
+<div class="title">Select a guild</div>
+
+<ng-container *ngIf="!guildManager.isBusy; else loading">
+
+  <ng-container *ngIf="guildManager.isError; else errorTemplate">
+    <span style="color: red;">Connection failed.</span>
+  </ng-container>
+  <ng-template #errorTemplate>
+    <div class="guild-row" *ngFor="let guild of guildManager.guilds">
+      <div class="guild-button button" [title]="guild.name + ' (' + guild.id + ')'"
+        (click)="guildManager.setCurrentGuild(guild)">
+        <img [src]="guild.iconURL || noImage">
+        <span>{{guild.name}}</span>
+      </div>
+    </div>
+  </ng-template>
+  
+</ng-container>
+<ng-template #loading>
+  loading...
+</ng-template>
