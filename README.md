@@ -30,6 +30,10 @@ Replace the value assignment in the first line with the address of your server.
 
 To build it, run
 
+`npm i`
+
+and then
+
 `ng build --prod`
 
 It will generate a static website in the `dist` directory, which can be served normally. Though, now that you already have the nightmare NodeJS thing on your computer, you could just use [http-server](https://github.com/http-party/http-server).
