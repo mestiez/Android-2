@@ -13,12 +13,13 @@ There are two main components to the bot: the server and the client.
 The server runs on .NET 5.0 so can be built for whatever platform you want to run it on. Read the [dotnet documentation](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish) to learn more about publishing.
 
 After it is built, create a file called `bot_token` in the output directory and paste your bot token inside. The file name should match `bot_token` exactly, no extension.
+Also create `listening_address` with the target listener address, and `client_address` with the target client address.
 
 Then, you can simply run
 
-`dotnet ./AndroidServer.dll --urls=[address]`
+`dotnet ./Backend.dll`
 
-and replace `[address]` with the address of your server. This has to be run directly from inside the output folder to ensure the `bot_token` file is found.
+This has to be run directly from inside the output folder to ensure the files you created are found.
 
 **IMPORTANT: THERE IS NO SECURITY IN PLACE YET. Anyone can access the control panel if they have the address.
 Host it locally or implement some sort of authentication**
