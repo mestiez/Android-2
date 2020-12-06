@@ -98,11 +98,6 @@ namespace AndroidServer.Domain.Listeners
             OnShutdown();
         }
 
-        public override void OnPropertyChange(string name, object value)
-        {
-            base.OnPropertyChange(name, value);
-        }
-
         private async Task RetrieveEmotes()
         {
 

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidServer", "AndroidServer\AndroidServer.csproj", "{125FFE5B-C5BB-489C-AAD3-F18399CB0419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{5382B160-CBF2-4447-9A5C-036F25231429}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{5382B160-CBF2-4447-9A5C-036F25231429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "..\Backend\Backend.csproj", "{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi", "RestApi\RestApi.csproj", "{CE4814EE-E430-4CFF-BD20-2930A2F562A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{125FFE5B-C5BB-489C-AAD3-F18399CB0419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{125FFE5B-C5BB-489C-AAD3-F18399CB0419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{125FFE5B-C5BB-489C-AAD3-F18399CB0419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{125FFE5B-C5BB-489C-AAD3-F18399CB0419}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5382B160-CBF2-4447-9A5C-036F25231429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5382B160-CBF2-4447-9A5C-036F25231429}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5382B160-CBF2-4447-9A5C-036F25231429}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5382B160-CBF2-4447-9A5C-036F25231429}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE4814EE-E430-4CFF-BD20-2930A2F562A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE4814EE-E430-4CFF-BD20-2930A2F562A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE4814EE-E430-4CFF-BD20-2930A2F562A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE4814EE-E430-4CFF-BD20-2930A2F562A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

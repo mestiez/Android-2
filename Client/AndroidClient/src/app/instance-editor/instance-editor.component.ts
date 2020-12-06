@@ -149,6 +149,7 @@ export class InstanceEditorComponent implements OnInit {
   public refreshListeners(): void {
     this.selectedChannelListeners = null;
     this.rest.getListeners(this.guildService.currentGuild.id, this.selectedChannel.id).subscribe((listeners: ListenerInfo[]) => {
+      console.log(listeners);
       this.selectedChannelListeners = listeners;
       for (const iterator of listeners) {
         iterator.channelName = this.getChannelName(iterator.channelID);

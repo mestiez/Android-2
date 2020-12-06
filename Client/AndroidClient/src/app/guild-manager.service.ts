@@ -34,6 +34,7 @@ export class GuildManagerService {
     this.rest.getGuilds().subscribe((guilds: GuildInfo[]) => {
       this.guilds = guilds;
       this.isBusy = false;
+      console.log(guilds);
     }, (error) => {
       console.error(error);
       this.isError = true;

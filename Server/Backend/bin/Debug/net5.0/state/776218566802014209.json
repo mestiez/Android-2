@@ -1,0 +1,66 @@
+{
+  "$type": "AndroidServer.Domain.AndroidState, Domain",
+  "Active": true,
+  "Listeners": {
+    "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.AndroidListener, Domain]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.CommandListener, Domain",
+        "Lvl1RoleID": 776218566802014216,
+        "Lvl2RoleID": 776218566802014217,
+        "Lvl3RoleID": 776218566843301908,
+        "Lvl4RoleID": 776218566843301910,
+        "Level1AccessRole": "776218566802014216",
+        "Level2AccessRole": "776218566802014217",
+        "Level3AccessRole": "776218566843301908",
+        "Level4AccessRole": "776218566843301910",
+        "Prefixes": "\nhey \nay \noy \nyo \nokay \noi \noh \nok \nmr \nmr. \nmr.\nmister \n...\nlmao \nlol \nour \nthe \nmy ",
+        "Names": "android\nbot\ndroid\nbiscuit\nbiscuit#1\nbiscuit#2\nbiscuit1\nbiscuit2\nrobotboy\nr2\nr2d2\ncomputer\nslave\nc3po\n3po\nxj9\nnano\nrobot",
+        "Suffixes": "\n~\n ~\n~~\n ~~\n,\n.\n..\n...\n?\n??\n???\n!\n!!\n!!!\nsan\nchan\nkun\nsenpai\n san\n chan\n kun\n senpai\n-san\n-chan\n-kun\n-senpai",
+        "TriggerResponses": "hm?\nwhat\n?\nyes?\npresent\nwhat do you WANT\n??\nwhat's up\nyeah?",
+        "Active": true,
+        "ChannelID": 776218566843301913,
+        "DisplayName": "CommandListener",
+        "GlobalListener": true,
+        "ID": "YqCWW6m3EcV86l",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "CommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.FunCommandListener, Domain",
+        "Active": true,
+        "ChannelID": 776218566843301913,
+        "DisplayName": "FunCommandListener",
+        "GlobalListener": true,
+        "ID": "0RTD3uQzKImxh8",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "FunCommandListener"
+      }
+    ]
+  },
+  "MutedUsers": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.UInt64, System.Private.CoreLib],[AndroidServer.Domain.MuteEntry, Domain]], System.Private.CoreLib"
+  }
+}

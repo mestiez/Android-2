@@ -1,0 +1,461 @@
+{
+  "$type": "AndroidServer.Domain.AndroidState, Domain",
+  "Active": true,
+  "Listeners": {
+    "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.AndroidListener, Domain]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "AndroidServer.Domain.Listeners.MentionSpamListener, Domain",
+        "MentionCountThreshold": 5.0,
+        "MuteDurationInHours": 240.0,
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "Mention Spam Listener",
+        "GlobalListener": true,
+        "ID": "HRy78ej1A1ssu4",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "651193630182211604",
+                "Name": "administrator",
+                "Color": "rgb(255,93,201)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603657996614107138",
+                "Name": "developer",
+                "Color": "rgb(229,76,105)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603650422884007956",
+                "Name": "moderator",
+                "Color": "rgb(160,91,255)"
+              }
+            ]
+          }
+        },
+        "Name": "MentionSpamListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.PinListener, Domain",
+        "ignoreFurtherEdit": {
+          "$type": "System.Collections.Generic.HashSet`1[[System.UInt64, System.Private.CoreLib]], System.Private.CoreLib",
+          "$values": []
+        },
+        "LogChannelID": "661948313024593921",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "PinListener",
+        "GlobalListener": true,
+        "ID": "mTnWpKrUcynSDz",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "PinListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.RuleRecallListener, Domain",
+        "RuleMessageChannelID": "603876092079636499",
+        "RuleMessageID": "604051493599051786",
+        "MessageRegex": "rule ?((# ?)|(number )?)\\d+",
+        "RuleRegex": "\\d+ - .+",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "RuleRecallListener",
+        "GlobalListener": true,
+        "ID": "N4KyXnuXNXa1b9",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": false,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603650422884007956",
+                "Name": "moderator",
+                "Color": "rgb(160,91,255)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "682172745190080523",
+                "Name": "trial moderator",
+                "Color": "rgb(110,144,255)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "651193630182211604",
+                "Name": "administrator",
+                "Color": "rgb(255,93,201)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603657996614107138",
+                "Name": "developer",
+                "Color": "rgb(229,76,105)"
+              }
+            ]
+          }
+        },
+        "Name": "RuleRecallListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.UserPresenceListener, Domain",
+        "LogChannelID": "661948313024593921",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "UserPresenceListener",
+        "GlobalListener": true,
+        "ID": "r2lJ9Vn1vzjFQX",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "UserPresenceListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.CommandListener, Domain",
+        "Lvl1RoleID": 682172745190080523,
+        "Lvl2RoleID": 603650422884007956,
+        "Lvl3RoleID": 651193630182211604,
+        "Lvl4RoleID": 603657996614107138,
+        "Level1AccessRole": "682172745190080523",
+        "Level2AccessRole": "603650422884007956",
+        "Level3AccessRole": "651193630182211604",
+        "Level4AccessRole": "603657996614107138",
+        "Prefixes": "\nhey \nay \noy \nyo \nokay \noi \noh \nok \nmr \nmr. \nmr.\nmister \n...\nlmao \nlol \nour \nthe \nmy ",
+        "Names": "android\nandroid 2\nbot\ndroid\nbiscuit\nbiscuit#1\nbiscuit#2\nbiscuit1\nbiscuit2\nrobotboy\nr2\nr2d2\ncomputer\nslave\nc3po\n3po\nxj9\nnano\nrobot",
+        "Suffixes": "\n~\n ~\n~~\n ~~\n,\n.\n..\n...\n?\n??\n???\n!\n!!\n!!!\nsan\nchan\nkun\nsenpai\n san\n chan\n kun\n senpai\n-san\n-chan\n-kun\n-senpai",
+        "TriggerResponses": "hm?\nwhat\n?\nyes?\npresent\nwhat do you WANT\n??\nwhat's up\nyeah?",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "CommandListener",
+        "GlobalListener": true,
+        "ID": "PaUpKTmFq3EhJx",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": false,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": [
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "682172745190080523",
+                "Name": "trial moderator",
+                "Color": "rgb(99,118,255)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603650422884007956",
+                "Name": "moderator",
+                "Color": "rgb(160,91,255)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "651193630182211604",
+                "Name": "administrator",
+                "Color": "rgb(255,93,201)"
+              },
+              {
+                "$type": "AndroidServer.Domain.RoleInfo, Domain",
+                "ID": "603657996614107138",
+                "Name": "developer",
+                "Color": "rgb(229,76,105)"
+              }
+            ]
+          }
+        },
+        "Name": "CommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.BasicCommandListener, Domain",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "BasicCommandListener",
+        "GlobalListener": true,
+        "ID": "fzVxIsDknLTRmW",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "BasicCommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.DebugCommandListener, Domain",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "DebugCommandListener",
+        "GlobalListener": true,
+        "ID": "IlqrFGhNdUpsXU",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "DebugCommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.FunCommandListener, Domain",
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "FunCommandListener",
+        "GlobalListener": true,
+        "ID": "Lrf2m0V6MU7ytF",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "FunCommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.Commands.ModerationCommandListener, Domain",
+        "MutedRole": "604692303550087207",
+        "InterrogationRole": "705165944007426130",
+        "DefaultMuteDurationInMinutes": 15.0,
+        "Active": true,
+        "ChannelID": 603876092079636499,
+        "DisplayName": "ModerationCommandListener",
+        "GlobalListener": true,
+        "ID": "WhF4Hz6eLnKcpA",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "ModerationCommandListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.SuggestionsListener, Domain",
+        "Suggestions": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.UInt64, System.Private.CoreLib],[AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain]], System.Private.CoreLib",
+          "782802977625735199": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 0,
+            "AuthorId": 158883055367487488,
+            "Content": "suggestion: test 4"
+          },
+          "782803079031816223": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 0,
+            "AuthorId": 158883055367487488,
+            "Content": "suggestion: 23"
+          },
+          "782803286343680011": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 0,
+            "AuthorId": 158883055367487488,
+            "Content": "Suggestion: test"
+          },
+          "783001756779020299": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 0,
+            "AuthorId": 158883055367487488,
+            "Content": "suggestion: test432980983"
+          },
+          "783006175061868545": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 1,
+            "AuthorId": 158883055367487488,
+            "Content": "suggestion: test5"
+          },
+          "783625461463777311": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 7,
+            "AuthorId": 762034740923858966,
+            "Content": "Suggestion: destructible wire"
+          },
+          "783634563137273858": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 1,
+            "Downvotes": 9,
+            "AuthorId": 244824229726388225,
+            "Content": "Suggestion: Compile PPG for Linux so we don't have to use Proton 😦"
+          },
+          "783665662060920863": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 2,
+            "Downvotes": 11,
+            "AuthorId": 578006345463365662,
+            "Content": "suggestion: a syringe that brings all limbs back together"
+          },
+          "783675206274514964": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 2,
+            "Downvotes": 12,
+            "AuthorId": 707256217763840111,
+            "Content": "suggestion: coop (or multiplayer)"
+          },
+          "783685871647064068": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 3,
+            "Downvotes": 3,
+            "AuthorId": 471244433111777290,
+            "Content": "suggestion: new maps"
+          },
+          "783694863370551296": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 3,
+            "Downvotes": 1,
+            "AuthorId": 592588498976899092,
+            "Content": "suggestion: Truck"
+          },
+          "784879127668719666": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 3,
+            "Downvotes": 2,
+            "AuthorId": 722536144784457850,
+            "Content": "Suggestion: make wire longer"
+          },
+          "784880985576570900": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 4,
+            "Downvotes": 1,
+            "AuthorId": 608119050077339648,
+            "Content": "Suggestion: People and androids should be able to hold glass shards"
+          },
+          "784973555641090058": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 3,
+            "Downvotes": 1,
+            "AuthorId": 592039988233764874,
+            "Content": "suggestion: if you were to lets say, build a box and toss it into water, as long as the box is airtight, it will not flood. This could make really cool contraptions involving submarines and underwater buildings."
+          },
+          "784976616769847327": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 4,
+            "Downvotes": 1,
+            "AuthorId": 630842031853535254,
+            "Content": "suggestion: add a weapon that melts/turns people into lava."
+          },
+          "784979297760444431": {
+            "$type": "AndroidServer.Domain.Listeners.SuggestionsListener+Suggestion, Domain",
+            "Upvotes": 2,
+            "Downvotes": 2,
+            "AuthorId": 630842031853535254,
+            "Content": "suggestion: Spawn able liquids that can interact with things, like fill a room with water, follow-up to my other suggestion make a room of larva."
+          }
+        },
+        "SuggestionPrefix": "suggestion:",
+        "CaseSensitivePrefix": false,
+        "PositiveVoteEmoteID": "604730173379706888",
+        "NegativeVoteEmoteID": "604730173236969472",
+        "DoWeeklyReset": true,
+        "WeeklyResetWeekday": 2.0,
+        "Active": true,
+        "ChannelID": 605732562492456970,
+        "DisplayName": "SuggestionsListener",
+        "GlobalListener": false,
+        "ID": "vajrESH5F1FwaM",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "SuggestionsListener"
+      },
+      {
+        "$type": "AndroidServer.Domain.Listeners.WorkshopLinkListener, Domain",
+        "WorkshopPathStart": "https://steamcommunity.com/sharedfiles/filedetails/?id=",
+        "Active": true,
+        "ChannelID": 666639129735331841,
+        "DisplayName": "WorkshopLinkListener",
+        "GlobalListener": false,
+        "ID": "HFuhnL15pvUyXG",
+        "ResponseFilters": {
+          "$type": "AndroidServer.Domain.ResponseFilters, Domain",
+          "Blacklist": true,
+          "Users": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.UserInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          },
+          "Roles": {
+            "$type": "System.Collections.Generic.List`1[[AndroidServer.Domain.RoleInfo, Domain]], System.Private.CoreLib",
+            "$values": []
+          }
+        },
+        "Name": "WorkshopLinkListener"
+      }
+    ]
+  },
+  "MutedUsers": {
+    "$type": "System.Collections.Generic.Dictionary`2[[System.UInt64, System.Private.CoreLib],[AndroidServer.Domain.MuteEntry, Domain]], System.Private.CoreLib"
+  }
+}
