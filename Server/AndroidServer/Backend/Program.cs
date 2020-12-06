@@ -1,6 +1,8 @@
 ﻿using AndroidServer.Domain;
 using Backend.Controllers;
 using RestApi;
+using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -11,12 +13,24 @@ namespace Backend
         private static AndroidService android;
         private static RestServer server;
 
+        private const string ListeningAddressPath = "listening_address";
+        private const string ClientAddressPath = "client_address";
+
         static void Main(string[] args)
         {
+            if (!File.Exists(ListeningAddressPath))
+                throw new Exception("Could not find listening address file at " + ListeningAddressPath);
+
+            if (!File.Exists(ClientAddressPath))
+                throw new Exception("Could not find client address file at " + ClientAddressPath);
+
+            var listeningAddress = File.ReadAllText(ListeningAddressPath);
+            var clientAddress = File.ReadAllText(ClientAddressPath);
+
             ListenerTypes.RegisterAssembly(Assembly.GetAssembly(typeof(AndroidListener)));
 
             android = new AndroidService();
-            server = new RestServer("http://localhost:3042/");
+            server = new RestServer(listeningAddress);
             server.Start();
 
             _ = Task.Run(android.StartDiscordLoop);
@@ -27,7 +41,7 @@ namespace Backend
             server.AddController(new SystemController());
 
             server.AllowedOrigins.Clear();
-            server.AllowedOrigins.Add("http://localhost:4200/");
+            server.AllowedOrigins.Add(clientAddress);
         }
     }
 }

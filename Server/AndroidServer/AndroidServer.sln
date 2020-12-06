@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{5382B160-CBF2-4447-9A5C-036F25231429}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "..\Backend\Backend.csproj", "{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend\Backend.csproj", "{ED2EEB81-27A2-4DAD-A96F-3CDE636B44A5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi", "RestApi\RestApi.csproj", "{CE4814EE-E430-4CFF-BD20-2930A2F562A7}"
 EndProject

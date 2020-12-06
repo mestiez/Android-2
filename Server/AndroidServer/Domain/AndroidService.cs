@@ -181,6 +181,7 @@ namespace AndroidServer.Domain
         {
             AndroidStateSerialiser.SaveAll(this);
 
+            Task.Run(Client.LogoutAsync).Wait();
             Task.Run(Client.StopAsync).Wait();
         }
     }

@@ -233,6 +233,8 @@ namespace RestApi
                             response.StatusCode = (int)HttpStatusCode.OK;
                             response.Close();
                             isInsideServerRequest = false;
+                            if (shouldShutdown)
+                                Stop();
                             return;
                         }
 
@@ -251,6 +253,8 @@ namespace RestApi
                                 response.StatusCode = (int)HttpStatusCode.OK;
                                 response.Close();
                                 isInsideServerRequest = false;
+                                if (shouldShutdown)
+                                    Stop();
                                 return;
                             }
                         }
@@ -281,6 +285,8 @@ namespace RestApi
                                     response.OutputStream.Close();
                                 }
                                 isInsideServerRequest = false;
+                                if (shouldShutdown)
+                                    Stop();
                                 return;
                         }
                     }
@@ -291,6 +297,8 @@ namespace RestApi
                         response.Close();
                         Console.WriteLine(ex.Message);
                         isInsideServerRequest = false;
+                        if (shouldShutdown)
+                            Stop();
                         return;
                     }
                 }

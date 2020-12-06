@@ -52,11 +52,15 @@ namespace RestApi
 
         private void Listen()
         {
+            Console.WriteLine("Started listening");
+
             while (listener.IsListening)
             {
                 var context = listener.GetContext();
                 OnRequest?.Invoke(this, context);
             }
+
+            Console.WriteLine("Stopped listening");
         }
 
         public void Dispose()

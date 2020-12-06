@@ -18,6 +18,12 @@
     <None Update="bot_token">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="client_address">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="listening_address">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
