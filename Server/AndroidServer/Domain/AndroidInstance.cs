@@ -133,11 +133,11 @@ namespace AndroidServer.Domain
         {
             if (!Active) return;
 
-            var downloadedMessage = await message.GetOrDownloadAsync();
+           // var downloadedMessage = await message.GetOrDownloadAsync();
 
-            await ActIfPassing(downloadedMessage, async (listener) =>
+            await ActIfPassing(message.Value, async (listener) =>
             {
-                await listener.OnMessageDeleted(downloadedMessage);
+                await listener.OnMessageDeleted(message.Value);
             });
         }
 

@@ -76,7 +76,7 @@ export class RestService {
   }
 
   public say(channelID: string, info: SayInfo) {
-    const data = `${info.message || ''}\n${info.fileName || ''}\n${info.fileB64 || ''}`;
+    const data = `${info.message || ''}␞${info.fileName || ''}␞${info.fileB64 || ''}`;
     return this.http.post(`${restEndpoint}instance/say?channelID=${channelID}`, data);
   }
 

@@ -664,26 +664,6 @@
             Role colour
             </summary>
         </member>
-        <member name="T:AndroidServer.Domain.SayInfo">
-            <summary>
-            Serialisable information about a message sent to the server via the client
-            </summary>
-        </member>
-        <member name="P:AndroidServer.Domain.SayInfo.Message">
-            <summary>
-            Content
-            </summary>
-        </member>
-        <member name="P:AndroidServer.Domain.SayInfo.FileName">
-            <summary>
-            Optional filename
-            </summary>
-        </member>
-        <member name="P:AndroidServer.Domain.SayInfo.FileB64">
-            <summary>
-            Optional file data encoded as a base64 string
-            </summary>
-        </member>
         <member name="T:AndroidServer.Domain.UiVariableTypeAttribute">
             <summary>
             Applying this attribute to a property will make it show up in the client

@@ -71,7 +71,7 @@ namespace Backend.Controllers
         [Rest(HttpVerb.Post, "say")]
         public async Task<RestResponse> Say(ulong channelID)
         {
-            var parts = CurrentBody.Split('\n');
+            var parts = CurrentBody.Split('␞');
 
             if (parts.Length != 3)
                 return new RestResponse(HttpStatusCode.BadRequest, $"Expected 3 lines in body, got {parts.Length}");

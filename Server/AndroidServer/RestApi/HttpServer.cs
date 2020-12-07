@@ -52,7 +52,7 @@ namespace RestApi
 
         private void Listen()
         {
-            Console.WriteLine("Started listening");
+            Console.WriteLine("Started listening on {0}", Address);
 
             while (listener.IsListening)
             {

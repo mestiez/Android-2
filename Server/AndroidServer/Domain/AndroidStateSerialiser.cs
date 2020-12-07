@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace AndroidServer.Domain
@@ -67,8 +68,20 @@ namespace AndroidServer.Domain
         /// </summary>
         public static void SaveAll(AndroidService service)
         {
-            foreach (var instance in service.AndroidInstances)
-                Save(instance.Value);
+            Console.WriteLine("Saving Android service...");
+
+            //I want exceptions as a concept to die
+            try
+            {
+                foreach (var instance in service.AndroidInstances)
+                    Save(instance.Value);
+
+                Console.WriteLine("Saved succesfully");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Saving failure: {0}", e.Message);
+            }
         }
 
         private static string GetPath(ulong id)

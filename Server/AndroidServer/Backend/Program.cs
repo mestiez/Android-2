@@ -4,6 +4,7 @@ using RestApi;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Backend
@@ -15,6 +16,7 @@ namespace Backend
 
         private const string ListeningAddressPath = "listening_address";
         private const string ClientAddressPath = "client_address";
+        private const int SaveServiceTimer = 30;
 
         static void Main(string[] args)
         {
@@ -42,6 +44,15 @@ namespace Backend
 
             server.AllowedOrigins.Clear();
             server.AllowedOrigins.Add(clientAddress);
+
+            System.Timers.Timer saveTimer = new System.Timers.Timer(TimeSpan.FromMinutes(SaveServiceTimer).TotalMilliseconds);
+            saveTimer.Elapsed += SaveAll;
+            saveTimer.Start();
+
+            static void SaveAll(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                AndroidStateSerialiser.SaveAll(android);
+            }
         }
     }
 }

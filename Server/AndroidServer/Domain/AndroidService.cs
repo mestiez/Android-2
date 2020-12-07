@@ -42,6 +42,11 @@ namespace AndroidServer.Domain
         }
 
         /// <summary>
+        /// Whether the 
+        /// </summary>
+        public bool IsRunning { get; private set; }
+
+        /// <summary>
         /// Start the main Discord loop
         /// </summary>
         public async Task StartDiscordLoop()
@@ -54,11 +59,13 @@ namespace AndroidServer.Domain
 
             var botToken = File.ReadAllText(BotTokenFilePath);
 
+            Client.GuildAvailable += OnGuildAvailable;
+            Client.GuildUnavailable += OnGuildUnavailable;
+
             await Client.LoginAsync(TokenType.Bot, botToken);
             await Client.StartAsync();
 
-            Client.GuildAvailable += OnGuildAvailable;
-            Client.GuildUnavailable += OnGuildUnavailable;
+            IsRunning = true;
 
             await Task.Delay(-1);
         }
@@ -180,6 +187,12 @@ namespace AndroidServer.Domain
         public void Stop()
         {
             AndroidStateSerialiser.SaveAll(this);
+
+            Client.LoggedOut += () =>
+            {
+                IsRunning = false;
+                return Task.CompletedTask;
+            };
 
             Task.Run(Client.LogoutAsync).Wait();
             Task.Run(Client.StopAsync).Wait();
