@@ -58,7 +58,7 @@ namespace Backend.Controllers
         [Rest(HttpVerb.Post, "setting")]
         public RestResponse SetListenerSetting(string id, string propertyName)
         {
-            var value = JsonConvert.DeserializeObject<JObject>(CurrentBody);
+            var value = DeserialiseBody<JObject>();
 
             var listener = Android.AndroidInstances.SelectMany(a => a.Value.Listeners).FirstOrDefault(a => a.ID == id);
             if (listener == null)
@@ -173,7 +173,7 @@ namespace Backend.Controllers
         [Rest(HttpVerb.Post, "filter")]
         public void SetListenerFilter(string id)
         {
-            var filters = JsonConvert.DeserializeObject<ResponseFilters>(CurrentBody);
+            var filters = DeserialiseBody<ResponseFilters>();
 
             var found = Android.FindListener(id);
             if (found == null)

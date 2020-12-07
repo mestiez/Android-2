@@ -121,7 +121,7 @@ namespace AndroidServer.Domain
         {
             if (!Active) return;
 
-            var downloadedMessage = await message.DownloadAsync();
+            var downloadedMessage = await message.GetOrDownloadAsync();
 
             await ActIfPassing(downloadedMessage, async (listener) =>
             {
@@ -133,7 +133,7 @@ namespace AndroidServer.Domain
         {
             if (!Active) return;
 
-            var downloadedMessage = await message.DownloadAsync();
+            var downloadedMessage = await message.GetOrDownloadAsync();
 
             await ActIfPassing(downloadedMessage, async (listener) =>
             {

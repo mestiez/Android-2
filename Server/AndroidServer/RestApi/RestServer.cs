@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -18,7 +19,7 @@ namespace RestApi
         private readonly List<RestController> controllers = new List<RestController>();
         private readonly List<RestAction> restActions = new List<RestAction>();
 
-        private JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
+        public JsonSerializerSettings SerializerSettings { get; set; } = new JsonSerializerSettings()
         {
             ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
@@ -263,7 +264,7 @@ namespace RestApi
                         {
                             case RestResponse restResponse:
                                 {
-                                    var json = JsonConvert.SerializeObject(restResponse.ReponseBody, serializerSettings);
+                                    var json = JsonConvert.SerializeObject(restResponse.ReponseBody, SerializerSettings);
                                     response.StatusCode = (int)restResponse.StatusCode;
                                     response.StatusDescription = restResponse.StatusDescription ?? restResponse.StatusCode.ToString();
                                     response.OutputStream.Write(FromUTF8(json));
@@ -280,7 +281,7 @@ namespace RestApi
                                 return;
                             default:
                                 {
-                                    var json = JsonConvert.SerializeObject(result, serializerSettings);
+                                    var json = JsonConvert.SerializeObject(result, SerializerSettings);
                                     response.OutputStream.Write(FromUTF8(json));
                                     response.OutputStream.Close();
                                 }
@@ -323,9 +324,20 @@ namespace RestApi
 
         private static string GetBodyString(HttpListenerRequest request)
         {
-            var bytes = new byte[request.ContentLength64];
-            int readCount = request.InputStream.Read(bytes, 0, bytes.Length);
-            //TODO assert valid 
+            if (request.ContentLength64 == -1)
+            {
+                Console.WriteLine($"The request body length is unknown");
+                return string.Empty;
+            }
+
+            int expectedLength = (int)request.ContentLength64;
+
+            using BinaryReader reader = new BinaryReader(request.InputStream, request.ContentEncoding);
+            var bytes = reader.ReadBytes(expectedLength);
+
+            if (bytes.Length != expectedLength)
+                Console.WriteLine($"The request body length does not match read length: expected {bytes.Length}, got {bytes.Length}");
+
             return ToUTF8(bytes);
         }
 

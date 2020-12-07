@@ -69,27 +69,35 @@ namespace Backend.Controllers
         }
 
         [Rest(HttpVerb.Post, "say")]
-        public async Task Say(ulong channelID)
+        public async Task<RestResponse> Say(ulong channelID)
         {
-            var message = JsonConvert.DeserializeObject<SayInfo>(CurrentBody);
+            var parts = CurrentBody.Split('\n');
+
+            if (parts.Length != 3)
+                return new RestResponse(HttpStatusCode.BadRequest, $"Expected 3 lines in body, got {parts.Length}");
+
+            int c = CurrentBody.Length;
+
+            var content = parts[0];
+            var fileName = parts[1];
+            var fileB64 = parts[2];
 
             var channel = await Android.Client.Rest.GetChannelAsync(channelID);
             if (channel is ITextChannel tc)
             {
-                if (!string.IsNullOrWhiteSpace(message.FileB64))
+                if (!string.IsNullOrWhiteSpace(fileB64))
                 {
-                    var bytes = Convert.FromBase64String(message.FileB64);
-                    MemoryStream stream = new MemoryStream(bytes);
-                    await tc.SendFileAsync(stream, message.FileName, message.Message);
-                    await stream.DisposeAsync();
+                    var bytes = Convert.FromBase64String(fileB64);
+                    using MemoryStream stream = new MemoryStream(bytes);
+                    await tc.SendFileAsync(stream, fileName, content);
                 }
                 else
                 {
-                    await tc.SendMessageAsync(message.Message);
+                    await tc.SendMessageAsync(content);
                 }
             }
 
-            await Task.CompletedTask;
+            return RestResponse.Ok;
         }
 
         [Rest(HttpVerb.Delete, "")]

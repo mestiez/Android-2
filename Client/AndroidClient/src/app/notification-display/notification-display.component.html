@@ -1,5 +1,5 @@
 <div class="display">
-    <div class="notification" [attr.level] = "notification.kind" *ngFor="let notification of notifications.reverse()">
+    <div class="notification" [attr.level] = "notification.kind" *ngFor="let notification of messages">
         <span class="prefix">[{{notification.kind.toUpperCase()}}]</span>
         <span class="message">{{notification.message}}</span>
     </div>
