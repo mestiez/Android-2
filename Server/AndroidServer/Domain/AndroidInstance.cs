@@ -184,7 +184,7 @@ namespace AndroidServer.Domain
                 if (allowedChannel && allowedUser)
                     try
                     {
-                        await action(listener);
+                        _ = Task.Run(() => action(listener));
                     }
                     catch (Exception e)
                     {

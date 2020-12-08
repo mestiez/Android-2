@@ -114,6 +114,8 @@ namespace AndroidServer.Domain.Listeners.Commands
 
                 await parameters.Reply(reply);
             }
+            else 
+                await parameters.Reply("come back soon!");
         }
 
         [Command(CommandAccessLevel.Level1, "mute")]

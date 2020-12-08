@@ -253,6 +253,11 @@
             Construct a service
             </summary>
         </member>
+        <member name="P:AndroidServer.Domain.AndroidService.IsRunning">
+            <summary>
+            Whether the 
+            </summary>
+        </member>
         <member name="M:AndroidServer.Domain.AndroidService.StartDiscordLoop">
             <summary>
             Start the main Discord loop
