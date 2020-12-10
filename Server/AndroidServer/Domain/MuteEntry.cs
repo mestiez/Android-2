@@ -5,12 +5,12 @@ namespace AndroidServer.Domain
     /// <summary>
     /// An entry in the mute list
     /// </summary>
-    public struct MuteEntry
+    public class MuteEntry
     {
         /// <summary>
         /// Construct a mute entry
         /// </summary>
-        public MuteEntry(ulong userId, ulong channelId, ulong guildId, DateTime expiration) : this()
+        public MuteEntry(ulong userId, ulong channelId, ulong guildId, DateTime expiration)
         {
             UserID = userId;
             ChannelID = channelId;

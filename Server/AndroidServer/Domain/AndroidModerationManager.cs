@@ -36,6 +36,7 @@ namespace AndroidServer.Domain
         /// </summary>
         public Dictionary<ulong, MuteEntry> MutesByUser = new Dictionary<ulong, MuteEntry>();
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "Its callbacks are used")]
         private Timer timer;
         private ulong mutedRoleID;
         private readonly AndroidInstance instance;

@@ -133,7 +133,7 @@ namespace AndroidServer.Domain
         {
             if (!Active) return;
 
-           // var downloadedMessage = await message.GetOrDownloadAsync();
+            // var downloadedMessage = await message.GetOrDownloadAsync();
 
             await ActIfPassing(message.Value, async (listener) =>
             {
@@ -149,7 +149,7 @@ namespace AndroidServer.Domain
             if (waitingForReply.TryGetValue(message.Author.Id, out var q))
             {
                 if ((DateTime.UtcNow - q.AskTime) < waitingExpiration)
-                    await q.ResponseFunction?.Invoke(message);
+                    _ = Task.Run(() => q.ResponseFunction?.Invoke(message));
 
                 waitingForReply.Remove(message.Author.Id);
             }
