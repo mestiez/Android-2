@@ -84,9 +84,12 @@ namespace AndroidServer.Domain
         /// </summary>
         public async Task Unmute(IGuildUser user)
         {
+            if (user == null)
+                return;
+
             ulong id = user.Id;
 
-            if (!MutesByUser.TryGetValue(id, out var entry)) return;
+            if (!MutesByUser.TryGetValue(id, out var entry) || entry == null) return;
 
             var removalSuccess = MutesByUser.Remove(id);
             if (!removalSuccess)
@@ -108,7 +111,10 @@ namespace AndroidServer.Domain
         /// </summary>
         public async Task Mute(IGuildUser user, ITextChannel channel, TimeSpan duration)
         {
-            bool userIsAlreadyMuted = MutesByUser.TryGetValue(user.Id, out var entry);
+            if (user == null)
+                return;
+
+            bool userIsAlreadyMuted = MutesByUser.TryGetValue(user.Id, out var entry) && entry != null;
             if (userIsAlreadyMuted)
             {
                 var newExpiration = DateTime.UtcNow + duration;
