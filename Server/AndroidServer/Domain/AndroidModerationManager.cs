@@ -74,7 +74,10 @@ namespace AndroidServer.Domain
                 if (expired)
                 {
                     var user = await Guild.GetUserAsync(pair.Key);
-                    await Unmute(user);
+                    if (user != null)
+                        await Unmute(user);
+                    else 
+                        MutesByUser.Remove(pair.Key);
                 }
             }
         }
