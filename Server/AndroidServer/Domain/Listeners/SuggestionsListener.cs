@@ -49,7 +49,7 @@ namespace AndroidServer.Domain.Listeners
         public override void Initialise()
         {
             if (Suggestions == null)
-                Suggestions = new();
+                Suggestions = new Dictionary<ulong, Suggestion>();
 
             Android.Client.ReactionAdded += OnReactionAdd;
             Android.Client.ReactionRemoved += OnReactionRemoved;
@@ -71,7 +71,11 @@ namespace AndroidServer.Domain.Listeners
             {
                 try
                 {
-                    if (!canReset) return;
+                    if (!canReset)
+                    {
+                        Console.WriteLine("Attempt to reset suggestions but canReset was false");
+                        return;
+                    }
                     canReset = false;
                     await ResetPeriodicBoard();
                 }

@@ -46,6 +46,77 @@ namespace AndroidServer.Domain.Listeners.Commands
             }
         }
 
+        [Command(CommandAccessLevel.Level4, "force reset suggestions", "reset suggestions")]
+        public async Task ForceSuggestionReset(CommandParameters parameters)
+        {
+            var listener = parameters.Instance.GetListener<SuggestionsListener>();
+            await listener.ResetPeriodicBoard();
+        }
+
+        [Command(CommandAccessLevel.Level2, new[] { "top", "show top", "show the top", "show me the top" })]
+        public async Task TopSuggestions(CommandParameters parameters)
+        {
+            const int MaxSuggestionCount = 25;
+            if (!int.TryParse(parameters.GivenArguments[0], out int count)) return;
+            Order order = Order.Best;
+
+            switch (parameters.GivenArguments[1])
+            {
+                case "worst":
+                    order = Order.Worst;
+                    if (!parameters.GivenArguments[2].StartsWith("suggestion")) return;
+                    break;
+                case "best":
+                    order = Order.Best;
+                    if (!parameters.GivenArguments[2].StartsWith("suggestion")) return;
+                    break;
+                case "suggestions":
+                case "suggestion":
+                    order = Order.Best;
+                    break;
+                default: return;
+            }
+
+            if (count <= 0)
+            {
+                await parameters.SocketMessage.Channel.SendMessageAsync($"{count} isn't a valid amount. it has to be equal or more than 1");
+                return;
+            }
+
+            var suggestions = Android.GetListener<SuggestionsListener>().Suggestions;
+
+            if (count > Math.Min(suggestions.Count, MaxSuggestionCount))
+            {
+                count = Math.Min(suggestions.Count, MaxSuggestionCount);
+                await parameters.SocketMessage.Channel.SendMessageAsync($"i can only show {MaxSuggestionCount} entries");
+            }
+
+            var values = suggestions.Values;
+            IEnumerable<SuggestionsListener.Suggestion> topSuggestions;
+            if (order == Order.Worst)
+                topSuggestions = values.OrderBy(s => s.Score).Take(count);
+            else
+                topSuggestions = values.OrderByDescending(s => s.Score).Take(count);
+
+            var builder = new EmbedBuilder();
+            builder.Color = new Color(0x7289da);
+            int index = 0;
+            foreach (var suggestion in topSuggestions)
+            {
+                index++;
+                builder.AddField($"#{index}: {suggestion.Score} points", suggestion.EllipsedContent);
+            }
+            var embed = builder.Build();
+
+            await parameters.SocketMessage.Channel.SendMessageAsync($"the top {count} {order.ToString().ToLower()} suggestions are", false, embed);
+        }
+
+        private enum Order
+        {
+            Worst,
+            Best
+        }
+
         [Command(CommandAccessLevel.Level4, "commands", "list commands", "list all commands")]
         public async Task Commands(CommandParameters parameters)
         {
