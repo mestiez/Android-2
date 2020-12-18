@@ -59,25 +59,25 @@ namespace AndroidServer.Domain.Listeners.Commands
 
         public ModerationCommandListener(AndroidInstance android, ulong channelID) : base(android, channelID) { }
 
-        [Command(CommandAccessLevel.Level2, "ban")]
+        [Command(CommandAccessLevel.Level1, "ban")]
         public async Task BanFromChannels(CommandParameters parameters)
         {
             await SetChannelBan(parameters, true);
         }
 
-        [Command(CommandAccessLevel.Level2, "unban")]
+        [Command(CommandAccessLevel.Level1, "unban")]
         public async Task UnbanFromChannels(CommandParameters parameters)
         {
             await SetChannelBan(parameters, false);
         }
 
-        [Command(CommandAccessLevel.Level2, "interrogate", "question")]
+        [Command(CommandAccessLevel.Level1, "interrogate", "question")]
         public async Task Interrogate(CommandParameters parameters)
         {
             await SetInterrogationStatus(parameters, true);
         }
 
-        [Command(CommandAccessLevel.Level2, "release", "uninterrogate")]
+        [Command(CommandAccessLevel.Level1, "release", "uninterrogate")]
         public async Task Uninterrogate(CommandParameters parameters)
         {
             await SetInterrogationStatus(parameters, false);

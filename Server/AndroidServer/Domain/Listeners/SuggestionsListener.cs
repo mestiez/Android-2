@@ -104,7 +104,6 @@ namespace AndroidServer.Domain.Listeners
 
         private async Task RetrieveEmotes()
         {
-
             if (upvote == null && ulong.TryParse(PositiveVoteEmoteID, out ulong u))
                 upvote = await Android.Guild.GetEmoteAsync(u);
 
@@ -123,7 +122,7 @@ namespace AndroidServer.Domain.Listeners
 
         private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            if (channel.Id != ChannelID) return;
+            if (channel.Id != ChannelID || !Active || !Android.Active) return;
             if (!Suggestions.TryGetValue(message.Id, out var suggestion)) return;
 
             await RetrieveEmotes();
@@ -138,7 +137,7 @@ namespace AndroidServer.Domain.Listeners
 
         private async Task OnReactionAdd(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)
         {
-            if (channel.Id != ChannelID) return;
+            if (channel.Id != ChannelID || !Active || !Android.Active) return;
             if (!Suggestions.TryGetValue(message.Id, out var suggestion)) return;
 
             await RetrieveEmotes();
@@ -149,12 +148,6 @@ namespace AndroidServer.Domain.Listeners
                 suggestion.Downvotes++;
 
             await Task.CompletedTask;
-        }
-
-        public override async Task OnMessageEdited(IMessage arg)
-        {
-            if (Suggestions.ContainsKey(arg.Id))
-                await arg.Channel.SendMessageAsync("do not edit your suggestion, especially if it was marked a duplicate");
         }
 
         public override async Task OnMessage(SocketMessage arg)
@@ -220,7 +213,7 @@ namespace AndroidServer.Domain.Listeners
             });
         }
 
-        private string GetSignificantContent(string input)
+        private static string GetSignificantContent(string input)
         {
             //TODO remove insignificance
             return input.Normalize().ToLower().Trim();

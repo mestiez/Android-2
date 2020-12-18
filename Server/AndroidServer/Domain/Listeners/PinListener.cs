@@ -19,8 +19,20 @@ namespace AndroidServer.Domain.Listeners
         [Newtonsoft.Json.JsonRequired]
         private HashSet<ulong> ignoreFurtherEdit = new HashSet<ulong>();
 
-        public override async Task OnMessageEdited(IMessage message)
+        public override void Initialise()
         {
+            Android.Client.MessageUpdated += OnMessageEdited;
+        }
+
+        public override void OnDelete()
+        {
+            Android.Client.MessageUpdated -= OnMessageEdited;
+        }
+
+        private async Task OnMessageEdited(Cacheable<IMessage, ulong> c, SocketMessage message, ISocketMessageChannel channel)
+        {
+            if ((channel.Id != ChannelID && !GlobalListener) || (channel as IGuildChannel).GuildId != Android.GuildID || !Active || !Android.Active) return;
+
             if (message.IsPinned && !ignoreFurtherEdit.Contains(message.Id))
             {
                 var embed = new EmbedBuilder().
@@ -33,7 +45,7 @@ namespace AndroidServer.Domain.Listeners
 
                 if (ulong.TryParse(LogChannelID, out var channelId))
                 {
-                    await (Android.Client.GetChannel(channelId) as ISocketMessageChannel).SendMessageAsync(embed: embed);
+                    await(Android.Client.GetChannel(channelId) as ISocketMessageChannel).SendMessageAsync(embed: embed);
                     ignoreFurtherEdit.Add(message.Id);
                 }
             }

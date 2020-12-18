@@ -103,14 +103,6 @@ namespace AndroidServer.Domain
         /// Called when a message is sent to a channel this listener is listening to. Base class does nothing here
         /// </summary>
         public virtual Task OnMessage(SocketMessage message) { return Task.CompletedTask; }
-        /// <summary>
-        /// Called when a message is deleted in a channel this listener is listening to. Base class does nothing here
-        /// </summary>
-        public virtual Task OnMessageDeleted(IMessage message) { return Task.CompletedTask; }
-        /// <summary>
-        /// Called when a message is edited in a channel this listener is listening to. Base class does nothing here
-        /// </summary>
-        public virtual Task OnMessageEdited(IMessage message) { return Task.CompletedTask; }
 
         /// <summary>
         /// Called when the Android instance is being initialised

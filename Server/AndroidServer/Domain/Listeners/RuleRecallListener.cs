@@ -1,4 +1,5 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,6 +30,16 @@ namespace AndroidServer.Domain.Listeners
         private Regex regex;
 
         public RuleRecallListener(AndroidInstance android, ulong channelID) : base(android, channelID) { }
+
+        public override void Initialise()
+        {
+            Android.Client.MessageUpdated += OnMessageEdited;
+        }
+
+        public override void OnDelete()
+        {
+            Android.Client.MessageUpdated -= OnMessageEdited;
+        }
 
         public override async Task OnMessage(SocketMessage arg)
         {
@@ -67,10 +78,10 @@ namespace AndroidServer.Domain.Listeners
                 await arg.Channel.SendMessageAsync(response);
         }
 
-        public override async Task OnMessageEdited(Discord.IMessage message)
+        private Task OnMessageEdited(Cacheable<IMessage, ulong> c, SocketMessage message, ISocketMessageChannel channel)
         {
             dirty = true;
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         private void Configure()

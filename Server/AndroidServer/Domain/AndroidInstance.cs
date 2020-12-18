@@ -59,8 +59,6 @@ namespace AndroidServer.Domain
             EveryoneRole = Guild.EveryoneRole;
 
             Client.MessageReceived += OnMessageReceived;
-            Client.MessageDeleted += OnMessageDeleted;
-            Client.MessageUpdated += OnMessageEdited;
 
             Moderation = new AndroidModerationManager(this);
 
@@ -117,30 +115,6 @@ namespace AndroidServer.Domain
             Listeners.Clear();
         }
 
-        private async Task OnMessageEdited(Cacheable<IMessage, ulong> message, SocketMessage arg2, ISocketMessageChannel channel)
-        {
-            if (!Active) return;
-
-            var downloadedMessage = await message.GetOrDownloadAsync();
-
-            await ActIfPassing(downloadedMessage, async (listener) =>
-            {
-                await listener.OnMessageEdited(downloadedMessage);
-            });
-        }
-
-        private async Task OnMessageDeleted(Cacheable<IMessage, ulong> message, ISocketMessageChannel channel)
-        {
-            if (!Active) return;
-
-            // var downloadedMessage = await message.GetOrDownloadAsync();
-
-            await ActIfPassing(message.Value, async (listener) =>
-            {
-                await listener.OnMessageDeleted(message.Value);
-            });
-        }
-
         private async Task OnMessageReceived(SocketMessage message)
         {
             if (!Active) return;
@@ -154,13 +128,15 @@ namespace AndroidServer.Domain
                 waitingForReply.Remove(message.Author.Id);
             }
 
-            await ActIfPassing(message, async (listener) =>
+            ActIfPassing(message, async (listener) =>
             {
                 await listener.OnMessage(message);
             });
+
+            await Task.CompletedTask;
         }
 
-        private async Task ActIfPassing(IMessage message, Func<AndroidListener, Task> action)
+        private void ActIfPassing(IMessage message, Func<AndroidListener, Task> action)
         {
             if (message == null) return;
             if (action == null) return;
