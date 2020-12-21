@@ -27,7 +27,7 @@ namespace AndroidServer.Domain.Listeners
             Android.Client.MessageUpdated += OnMessageEdited;
         }
 
-        public override void OnDelete()
+        public override void OnShutdown()
         {
             Android.Client.MessageUpdated -= OnMessageEdited;
         }
