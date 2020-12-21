@@ -143,16 +143,6 @@
             Called when a message is sent to a channel this listener is listening to. Base class does nothing here
             </summary>
         </member>
-        <member name="M:AndroidServer.Domain.AndroidListener.OnMessageDeleted(Discord.IMessage)">
-            <summary>
-            Called when a message is deleted in a channel this listener is listening to. Base class does nothing here
-            </summary>
-        </member>
-        <member name="M:AndroidServer.Domain.AndroidListener.OnMessageEdited(Discord.IMessage)">
-            <summary>
-            Called when a message is edited in a channel this listener is listening to. Base class does nothing here
-            </summary>
-        </member>
         <member name="M:AndroidServer.Domain.AndroidListener.Initialise">
             <summary>
             Called when the Android instance is being initialised

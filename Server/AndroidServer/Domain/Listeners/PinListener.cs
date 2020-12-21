@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace AndroidServer.Domain.Listeners
         [Newtonsoft.Json.JsonRequired]
         private HashSet<ulong> ignoreFurtherEdit = new HashSet<ulong>();
 
+        private int c = 0;
+
         public override void Initialise()
         {
             Android.Client.MessageUpdated += OnMessageEdited;
@@ -31,9 +34,10 @@ namespace AndroidServer.Domain.Listeners
 
         private async Task OnMessageEdited(Cacheable<IMessage, ulong> c, SocketMessage message, ISocketMessageChannel channel)
         {
-            if ((channel.Id != ChannelID && !GlobalListener) || (channel as IGuildChannel).GuildId != Android.GuildID || !Active || !Android.Active) return;
+            if ((channel.Id != ChannelID && !GlobalListener) || (channel as IGuildChannel).GuildId != Android.GuildID || !Active || !Android.Active) 
+                return;
 
-            if (message.IsPinned && !ignoreFurtherEdit.Contains(message.Id))
+            if (ulong.TryParse(LogChannelID, out var channelId) && message.IsPinned && !ignoreFurtherEdit.Contains(message.Id))
             {
                 var embed = new EmbedBuilder().
                     WithTitle("Pinned message").
@@ -43,13 +47,9 @@ namespace AndroidServer.Domain.Listeners
                     AddField("Original content", message.Content).
                     Build();
 
-                if (ulong.TryParse(LogChannelID, out var channelId))
-                {
-                    await(Android.Client.GetChannel(channelId) as ISocketMessageChannel).SendMessageAsync(embed: embed);
-                    ignoreFurtherEdit.Add(message.Id);
-                }
+                ignoreFurtherEdit.Add(message.Id);
+                await (Android.Client.GetChannel(channelId) as ISocketMessageChannel).SendMessageAsync(embed: embed);
             }
-            await Task.CompletedTask;
         }
     }
 }

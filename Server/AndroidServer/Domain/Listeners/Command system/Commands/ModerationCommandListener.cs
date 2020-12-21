@@ -50,7 +50,6 @@ namespace AndroidServer.Domain.Listeners.Commands
 
         public override void Initialise()
         {
-            base.Initialise();
             Android.Moderation.MutedRoleID = mutedRole;
         }
 
