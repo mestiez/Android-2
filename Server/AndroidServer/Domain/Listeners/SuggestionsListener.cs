@@ -38,10 +38,21 @@ namespace AndroidServer.Domain.Listeners
                 weeklyResetWeekday = d;
             }
         }
+        [UiVariableType(VariableType.Number)]
+        public float ResetHour24
+        {
+            get => resetHour24;
+            set
+            {
+                int d = (int)MathF.Round(MathF.Max(-23, MathF.Min(value, 23)));
+                resetHour24 = d;
+            }
+        }
 
         private readonly Timer timer = new Timer();
         private bool canReset = true;
         private int weeklyResetWeekday = 2;
+        private int resetHour24 = 12;
 
         private IEmote upvote;
         private IEmote downvote;
@@ -54,11 +65,12 @@ namespace AndroidServer.Domain.Listeners
             Android.Client.ReactionAdded += OnReactionAdd;
             Android.Client.ReactionRemoved += OnReactionRemoved;
 
-            timer.Interval = TimeSpan.FromMinutes(60).TotalMilliseconds;
+            timer.Interval = TimeSpan.FromHours(0.5).TotalMilliseconds;
 
             timer.Elapsed += CheckForReset;
 
             timer.Start();
+            timer.Enabled = true;
         }
 
         private async void CheckForReset(object o, ElapsedEventArgs ee)
@@ -67,7 +79,10 @@ namespace AndroidServer.Domain.Listeners
                 return;
 
             var now = DateTime.UtcNow;
-            if (now.DayOfWeek == (DayOfWeek)weeklyResetWeekday && now.TimeOfDay.Hours == 12)
+
+            Console.WriteLine($"Suggestion reset tick: current day {now.DayOfWeek}, required day {(DayOfWeek)weeklyResetWeekday}, current hour {now.TimeOfDay.Hours}, required hour {ResetHour24}. canReset is {canReset}");
+
+            if (now.DayOfWeek == (DayOfWeek)weeklyResetWeekday && now.TimeOfDay.Hours == ResetHour24)
             {
                 try
                 {
@@ -89,12 +104,12 @@ namespace AndroidServer.Domain.Listeners
 
         protected override void OnEnable()
         {
-            timer.Start();
+            timer.Enabled = true;
         }
 
         protected override void OnDisable()
         {
-            timer.Stop();
+            timer.Enabled = false;
         }
 
         public override void OnDelete()
@@ -169,7 +184,7 @@ namespace AndroidServer.Domain.Listeners
                 await arg.Channel.SendMessageAsync("A suggestion shouldn't exceed 1024 characters. Try not to group multiple suggestions into a single message.");
 
             await RetrieveEmotes();
-            
+
             await arg.AddReactionAsync(upvote);
             await arg.AddReactionAsync(downvote);
             AddSuggestion((IUserMessage)arg, false);
