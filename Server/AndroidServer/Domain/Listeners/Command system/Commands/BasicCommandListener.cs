@@ -40,27 +40,6 @@ namespace AndroidServer.Domain.Listeners.Commands
             await parameters.Reply(responses[i]);
         }
 
-        [Command(CommandAccessLevel.Level3, "play")]
-        public async Task PlayStatus(CommandParameters parameters)
-        {
-            var activityType = ActivityType.Playing;
-            await SetStatus(parameters, activityType);
-        }
-
-        [Command(CommandAccessLevel.Level3, "watch")]
-        public async Task WatchStatus(CommandParameters parameters)
-        {
-            var activityType = ActivityType.Watching;
-            await SetStatus(parameters, activityType);
-        }
-
-        [Command(CommandAccessLevel.Level3, "listen to", "listen")]
-        public async Task ListenStatus(CommandParameters parameters)
-        {
-            var activityType = ActivityType.Listening;
-            await SetStatus(parameters, activityType);
-        }
-
         [Command(CommandAccessLevel.Level3, "archive")]
         public async Task ArchiveChannel(CommandParameters parameters)
         {
@@ -99,18 +78,6 @@ namespace AndroidServer.Domain.Listeners.Commands
             }
 
             isTyping.Dispose();
-        }
-
-        private async Task SetStatus(CommandParameters parameters, ActivityType activityType)
-        {
-            if (parameters.GivenArguments.Length == 0)
-                return;
-
-            string task = parameters.ContentWithoutTriggerAndCommand;
-
-            if (string.IsNullOrWhiteSpace(task)) return;
-
-            await parameters.Instance.Client.SetActivityAsync(new Game(task, activityType));
         }
     }
 }

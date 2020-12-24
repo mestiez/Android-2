@@ -64,7 +64,6 @@ namespace AndroidServer.Domain.Listeners.Commands
             isTyping?.Dispose();
         }
 
-
         [Command(CommandAccessLevel.Level3, "say")]
         public async Task Say(CommandParameters parameters)
         {
