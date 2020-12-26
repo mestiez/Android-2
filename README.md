@@ -21,8 +21,7 @@ Then, you can simply run
 
 This has to be run directly from inside the output folder to ensure the files you created are found.
 
-**IMPORTANT: THERE IS NO SECURITY IN PLACE YET. Anyone can access the control panel if they have the address.
-Host it locally or implement some sort of authentication**
+**IMPORTANT: THERE IS ONLY BASIC AUTHORISATION IN PLACE. Anyone with the bot token and access to the control panel can control the bot. Ideally the HTTPS protocol should be used or you should implement more robust authorisation. Or just host the bot locally.**
 
 ### Client
 
