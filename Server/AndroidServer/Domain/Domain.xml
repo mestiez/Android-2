@@ -223,6 +223,11 @@
             The global bot service
             </summary>
         </member>
+        <member name="P:AndroidServer.Domain.AndroidService.BotToken">
+            <summary>
+            The bot token. This is null unless <see cref="M:AndroidServer.Domain.AndroidService.StartDiscordLoop"/> has been called and the bot is running successfully
+            </summary>
+        </member>
         <member name="P:AndroidServer.Domain.AndroidService.Instance">
             <summary>
             Main instance
