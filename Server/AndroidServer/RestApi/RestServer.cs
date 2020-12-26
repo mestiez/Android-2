@@ -28,6 +28,7 @@ namespace RestApi
         private bool isInsideServerRequest = false;
 
         public List<string> AllowedOrigins { get; } = new() { "*" };
+        public List<RequestFilter> RequestFilters { get; } = new();
 
         public RestServer(string address)
         {
@@ -76,6 +77,30 @@ namespace RestApi
             controllers.Add(controller);
         }
 
+        public void AddFilter(RequestFilter filter)
+        {
+            RequestFilters.Add(filter);
+        }
+
+        public T GetFilter<T>()
+        {
+            foreach (var item in RequestFilters)
+                if (item is T typed)
+                    return typed;
+
+            return default;
+        }
+
+        public static string GetRouteFromRequest(HttpListenerRequest request)
+        {
+            var url = request.RawUrl;
+            int queryStartIndex = url.LastIndexOf('?');
+            if (queryStartIndex != -1)
+                url = url.Substring(0, queryStartIndex);
+
+            return url;
+        }
+
         private async void OnServerRequest(object sender, HttpListenerContext e)
         {
             var request = e.Request;
@@ -86,7 +111,7 @@ namespace RestApi
 
             if (string.IsNullOrWhiteSpace(domain) || !AllowedOrigins.Any(a => MatchingRoute(a, domain)))
             {
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.StatusCode = (int)HttpStatusCode.Forbidden;
                 response.StatusDescription = "Origin not allowed";
                 response.Close();
                 isInsideServerRequest = false;
@@ -122,16 +147,21 @@ namespace RestApi
                     break;
             }
 
-            var url = request.RawUrl;
-            if (url == null)
+            if (verb != HttpVerb.Options)
+                foreach (var filter in RequestFilters)
+                    if (!filter.IsAllowed(e))
+                    {
+                        response.Close();
+                        isInsideServerRequest = false;
+                        return;
+                    }
+
+            var url = GetRouteFromRequest(request);
+            if (string.IsNullOrWhiteSpace(url))
             {
                 isInsideServerRequest = false;
                 return;
             }
-
-            int queryStartIndex = url.LastIndexOf('?');
-            if (queryStartIndex != -1)
-                url = url.Substring(0, queryStartIndex);
 
             var urlParams = request.QueryString;
 
@@ -351,7 +381,7 @@ namespace RestApi
             return Encoding.UTF8.GetString(v);
         }
 
-        private static bool MatchingRoute(string a, string b)
+        public static bool MatchingRoute(string a, string b)
         {
             const char separator = '/';
 
@@ -382,5 +412,10 @@ namespace RestApi
         {
             GC.SuppressFinalize(this);
         }
+    }
+
+    public abstract class RequestFilter
+    {
+        public abstract bool IsAllowed(HttpListenerContext context);
     }
 }

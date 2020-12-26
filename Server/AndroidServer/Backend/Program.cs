@@ -42,6 +42,8 @@ namespace Backend
             server.AddController(new ListenerController());
             server.AddController(new SystemController());
 
+            server.AddFilter(new TokenFilter());
+
             server.AllowedOrigins.Clear();
             server.AllowedOrigins.Add(clientAddress);
 

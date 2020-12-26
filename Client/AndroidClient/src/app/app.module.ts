@@ -10,6 +10,7 @@ import { CheckBoxComponent } from './check-box/check-box.component';
 import { NotificationDisplayComponent } from './notification-display/notification-display.component';
 import { DialogScreenComponent } from './dialog-screen/dialog-screen.component';
 import { ImportantControlsComponent } from './important-controls/important-controls.component';
+import { httpInterceptorProviders } from './rest.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { ImportantControlsComponent } from './important-controls/important-contr
     HttpClientModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

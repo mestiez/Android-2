@@ -16,6 +16,11 @@ namespace AndroidServer.Domain
         private const string BotTokenFilePath = "bot_token";
 
         /// <summary>
+        /// The bot token. This is null unless <see cref="StartDiscordLoop"/> has been called and the bot is running successfully
+        /// </summary>
+        public string BotToken { get; private set; }
+
+        /// <summary>
         /// Main instance
         /// </summary>
         public static AndroidService Instance { get; private set; }
@@ -65,6 +70,7 @@ namespace AndroidServer.Domain
             await Client.LoginAsync(TokenType.Bot, botToken);
             await Client.StartAsync();
 
+            BotToken = botToken;
             IsRunning = true;
 
             await Task.Delay(-1);

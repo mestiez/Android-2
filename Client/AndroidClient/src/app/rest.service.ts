@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -99,4 +99,23 @@ export class RestService {
   public getEmotes(guildId: string) {
     return this.http.get<EmoteInfo[]>(`${restEndpoint}guild/emotes?guildID=${guildId}`);
   }
+
+  public authorise(token64: string) {
+    return this.http.get<string>(`${restEndpoint}system/authorise?botToken=${token64}`);
+  }
 }
+
+@Injectable()
+export class NoopInterceptor implements HttpInterceptor {
+
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const nReq = req.clone({
+      headers: req.headers.set('auth', window.localStorage.secret || '')
+    });
+    return next.handle(nReq);
+  }
+}
+
+export const httpInterceptorProviders = [
+  { provide: HTTP_INTERCEPTORS, useClass: NoopInterceptor, multi: true },
+];

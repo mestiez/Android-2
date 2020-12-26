@@ -1,7 +1,23 @@
-<ng-container *ngIf="guildManager.hasCurrentGuild; else guildPickerTemplate">
-  <app-instance-editor></app-instance-editor>
-</ng-container>
-<ng-template #guildPickerTemplate>
-  <app-guild-picker></app-guild-picker>
-</ng-template>
-<app-dialog-screen></app-dialog-screen>
+<div class="fill" style="display: flex; justify-content: center; align-items: center;">
+  <ng-container *ngIf="auth.isAuthorised === true; else unauthorised">
+
+    <ng-container *ngIf="guildManager.hasCurrentGuild; else guildPickerTemplate">
+      <app-instance-editor></app-instance-editor>
+    </ng-container>
+    <ng-template #guildPickerTemplate>
+      <app-guild-picker></app-guild-picker>
+    </ng-template>
+    <app-dialog-screen></app-dialog-screen>
+
+  </ng-container>
+  <ng-template #unauthorised>
+    <div style="display: flex; align-items: stretch; flex-direction: column; gap: 5px; text-align: center;">
+      <p>Enter the bot token to access the control panel</p>
+      <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px;">
+        <input type="text" [(ngModel)]="tokenInput">
+        <div class="button center" style="padding: 0 15px" (click)="auth.tryAuthorise(tokenInput); tokenInput = '';">Submit</div>
+      </div>
+      <span *ngIf="auth.isAuthorised === false" style="color:red; margin-top: 10px">Incorrect token</span>
+    </div>
+  </ng-template>
+</div>
