@@ -41,6 +41,7 @@ namespace AndroidServer.Domain
         private ulong mutedRoleID;
         private readonly AndroidInstance instance;
         private IRole mutedRole = null;
+        private bool isBusyUnmuting = false;
 
         /// <summary>
         /// Construct a moderation manager
@@ -66,19 +67,32 @@ namespace AndroidServer.Domain
 
         private async void CheckExpiredEntries(object state)
         {
-            if (MutesByUser.Count == 0) return;
-            var now = DateTime.UtcNow;
-            foreach (var pair in MutesByUser.ToArray())
+            if (MutesByUser.Count == 0 || isBusyUnmuting) return;
+
+            isBusyUnmuting = true;
+            try
             {
-                var expired = now >= pair.Value.Expiration;
-                if (expired)
+                var now = DateTime.UtcNow;
+                foreach (var pair in MutesByUser.ToArray())
                 {
-                    var user = await Guild.GetUserAsync(pair.Key);
-                    if (user != null)
-                        await Unmute(user);
-                    else 
-                        MutesByUser.Remove(pair.Key);
+                    var expired = now >= pair.Value.Expiration;
+                    if (expired)
+                    {
+                        var user = await Guild.GetUserAsync(pair.Key);
+                        if (user != null)
+                            await Unmute(user);
+                        else
+                            MutesByUser.Remove(pair.Key);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to unmute: " + e.Message);
+            }
+            finally
+            {
+                isBusyUnmuting = false;
             }
         }
 
