@@ -65,7 +65,7 @@ namespace AndroidServer.Domain.Listeners
             Android.Client.ReactionAdded += OnReactionAdd;
             Android.Client.ReactionRemoved += OnReactionRemoved;
 
-            timer.Interval = TimeSpan.FromHours(0.5).TotalMilliseconds;
+            timer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
 
             timer.Elapsed += CheckForReset;
 
