@@ -820,6 +820,11 @@
             Pick random entry from an <see cref="T:System.Collections.Generic.IList`1"/>
             </summary>
         </member>
+        <member name="M:Domain.Utilities.TimeSpanToText(System.TimeSpan)">
+            <summary>
+            Turns a <see cref="T:System.TimeSpan"/> into an imprecise readable string
+            </summary>
+        </member>
         <member name="M:Domain.Utilities.ParseTimeFromText(System.String)">
             <summary>
             Get a <see cref="T:System.TimeSpan"/> from a string. Supports any whole number followed by second, minute, hour, day, week, or year
