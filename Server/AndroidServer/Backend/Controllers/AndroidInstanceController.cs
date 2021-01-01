@@ -1,6 +1,5 @@
 ﻿using AndroidServer.Domain;
 using Discord;
-using Newtonsoft.Json;
 using RestApi;
 using System;
 using System.Collections.Generic;

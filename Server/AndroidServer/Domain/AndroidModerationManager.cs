@@ -41,7 +41,7 @@ namespace AndroidServer.Domain
         private ulong mutedRoleID;
         private readonly AndroidInstance instance;
         private IRole mutedRole = null;
-        private bool isBusyUnmuting = false;
+        private bool isBusyChecking = false;
 
         /// <summary>
         /// Construct a moderation manager
@@ -57,7 +57,11 @@ namespace AndroidServer.Domain
         /// </summary>
         public void Initialise()
         {
-            timer = new Timer(CheckExpiredEntries, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(1));
+            timer = new Timer((e) =>
+            {
+                if (!isBusyChecking)
+                    Task.Run(CheckExpiredEntries);
+            }, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
         }
 
         private void RetrieveMutedRole()
@@ -65,12 +69,10 @@ namespace AndroidServer.Domain
             mutedRole = Guild.GetRole(mutedRoleID);
         }
 
-        private async void CheckExpiredEntries(object state)
+        private async Task CheckExpiredEntries()
         {
-            if (MutesByUser.Count == 0 || isBusyUnmuting) return;
-
-            isBusyUnmuting = true;
-
+            if (MutesByUser.Count == 0) return;
+            isBusyChecking = true;
             var copy = MutesByUser.ToArray();
             var now = DateTime.UtcNow;
             foreach (var pair in copy)
@@ -84,9 +86,8 @@ namespace AndroidServer.Domain
                     else
                         MutesByUser.Remove(pair.Key);
                 }
+                isBusyChecking = false;
             }
-
-            isBusyUnmuting = false;
         }
 
         /// <summary>
@@ -99,7 +100,7 @@ namespace AndroidServer.Domain
 
             ulong id = user.Id;
 
-            if (!MutesByUser.TryGetValue(id, out var entry) || entry == null) 
+            if (!MutesByUser.TryGetValue(id, out var entry) || entry == null)
                 return;
 
             var removalSuccess = MutesByUser.Remove(id);
@@ -139,8 +140,13 @@ namespace AndroidServer.Domain
             }
             else
             {
-                MutesByUser.Add(user.Id, new MuteEntry(user.Id, channel.Id, user.Guild.Id, DateTime.UtcNow + duration));
-                await channel.SendMessageAsync("muting " + user.Username);
+                if (MutesByUser.TryAdd(user.Id, new MuteEntry(user.Id, channel.Id, user.Guild.Id, DateTime.UtcNow + duration)))
+                    await channel.SendMessageAsync("muting " + user.Username);
+                else
+                {
+                    await channel.SendMessageAsync("failed to mute " + user.Username);
+                    return;
+                }
             }
             await SetMuteState(user, true);
         }
