@@ -70,30 +70,23 @@ namespace AndroidServer.Domain
             if (MutesByUser.Count == 0 || isBusyUnmuting) return;
 
             isBusyUnmuting = true;
-            try
+
+            var copy = MutesByUser.ToArray();
+            var now = DateTime.UtcNow;
+            foreach (var pair in copy)
             {
-                var now = DateTime.UtcNow;
-                foreach (var pair in MutesByUser.ToArray())
+                var expired = now >= pair.Value.Expiration;
+                if (expired)
                 {
-                    var expired = now >= pair.Value.Expiration;
-                    if (expired)
-                    {
-                        var user = await Guild.GetUserAsync(pair.Key);
-                        if (user != null)
-                            await Unmute(user);
-                        else
-                            MutesByUser.Remove(pair.Key);
-                    }
+                    var user = await Guild.GetUserAsync(pair.Key);
+                    if (user != null)
+                        await Unmute(user);
+                    else
+                        MutesByUser.Remove(pair.Key);
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to unmute: " + e.Message);
-            }
-            finally
-            {
-                isBusyUnmuting = false;
-            }
+
+            isBusyUnmuting = false;
         }
 
         /// <summary>
@@ -106,11 +99,15 @@ namespace AndroidServer.Domain
 
             ulong id = user.Id;
 
-            if (!MutesByUser.TryGetValue(id, out var entry) || entry == null) return;
+            if (!MutesByUser.TryGetValue(id, out var entry) || entry == null) 
+                return;
 
             var removalSuccess = MutesByUser.Remove(id);
             if (!removalSuccess)
+            {
                 Console.WriteLine("Could not remove " + id + " from the mute entry list");
+                return;
+            }
 
             if (user == null)
             {
@@ -142,11 +139,6 @@ namespace AndroidServer.Domain
             }
             else
             {
-                if (user == null)
-                {
-                    Console.WriteLine("User with ID " + user.Id + " is null");
-                    return;
-                }
                 MutesByUser.Add(user.Id, new MuteEntry(user.Id, channel.Id, user.Guild.Id, DateTime.UtcNow + duration));
                 await channel.SendMessageAsync("muting " + user.Username);
             }

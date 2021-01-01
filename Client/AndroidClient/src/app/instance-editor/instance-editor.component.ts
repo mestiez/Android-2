@@ -43,6 +43,10 @@ export class InstanceEditorComponent implements OnInit {
 
   public currentInstanceActive = false;
 
+  public showBotStatusEditor = false;
+  public setStatusType: 'play' | 'watch' | 'listen' = 'play';
+  public enteredBotStatus = '';
+
   constructor(public guildService: GuildManagerService, public rest: RestService, public dialogService: DialogService) { }
 
   ngOnInit(): void {
@@ -92,6 +96,7 @@ export class InstanceEditorComponent implements OnInit {
     this.selectedListener = null;
     this.sendMessageInfo = new SayInfo();
     this.selectedResponseFilters = null;
+    this.showBotStatusEditor = false;
     this.refreshListeners();
   }
 
@@ -301,5 +306,62 @@ export class InstanceEditorComponent implements OnInit {
       }
     }
     return id;
+  }
+
+  public setStatus() {
+    const mem = this.enteredBotStatus;
+    this.rest.setStatus(this.setStatusType, this.enteredBotStatus).subscribe(
+      () => {
+        notify(`status set to ${this.setStatusType} - ${mem}`, 'info');
+      }, (e: HttpErrorResponse) => {
+        notify('failed to set status: ' + e.message, 'err');
+      }
+    );
+    this.enteredBotStatus = '';
+  }
+
+  public clearStatus(){
+    this.enteredBotStatus = '';
+    this.setStatus();
+  }
+
+  public openBotStatusPage() {
+    this.selectedChannel = null;
+    this.showBotStatusEditor = true;
+  }
+
+  public leaveGuild() {
+    this.dialogService.currentDialog = {
+      question: 'You are about to delete this instance.\nThis action cannot be undone.',
+      action: () => {
+        this.rest.leaveGuild(this.guildService.currentGuild.id).subscribe(() => {
+          this.guildService.setCurrentGuild(null);
+        }, (e: HttpErrorResponse) => {
+          notify('could not leave guild: ' + e.message, 'err');
+        });
+      }
+    };
+  }
+
+  public saveToDisk() {
+    this.rest.saveToDisk(this.guildService.currentGuild.id).subscribe(() => {
+      notify('instance saved', 'info');
+    }, (e) => {
+      notify('failed to save instance', 'err');
+    });
+  }
+
+  public shutdown() {
+    this.dialogService.currentDialog = {
+      question: 'You are about to stop the server application.',
+      action: () => {
+        notify('shutdown requested...', 'warn');
+        this.rest.shutdown().subscribe(() => {
+          notify('shutdown success. you should close this page', 'info');
+        }, (e) => {
+          notify('shutdown failed: ' + e.message, 'err');
+        });
+      }
+    };
   }
 }

@@ -4,6 +4,7 @@ using RestApi;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Backend.Controllers
 {
@@ -33,6 +34,29 @@ namespace Backend.Controllers
             }
 
             return null;
+        }
+
+        [Rest(HttpVerb.Post, "botStatus")]
+        public async Task SetBotStatus()
+        {
+            var body = DeserialiseBody<StatusInfo>();
+
+            Discord.ActivityType type = Discord.ActivityType.Playing;
+
+            switch (body.Kind)
+            {
+                case "play":
+                    type = Discord.ActivityType.Playing;
+                    break;
+                case "watch":
+                    type = Discord.ActivityType.Watching;
+                    break;
+                case "listen":
+                    type = Discord.ActivityType.Listening;
+                    break;
+            }
+
+            await AndroidService.Instance.Client.SetGameAsync(body.Status, type: type);
         }
     }
 }

@@ -72,7 +72,7 @@ export class RestService {
   }
 
   public removeListener(guildID: string, listenerID: string) {
-    return this.http.delete(`${restEndpoint}instance/listeners?guildID=${guildID}&&listenerID=${listenerID}`);
+    return this.http.delete(`${restEndpoint}instance/listeners?guildID=${guildID}&listenerID=${listenerID}`);
   }
 
   public say(channelID: string, info: SayInfo) {
@@ -98,6 +98,13 @@ export class RestService {
 
   public getEmotes(guildId: string) {
     return this.http.get<EmoteInfo[]>(`${restEndpoint}guild/emotes?guildID=${guildId}`);
+  }
+
+  public setStatus(kind: string, status: string) {
+    return this.http.post(`${restEndpoint}system/botStatus`, {
+      kind,
+      status
+    });
   }
 
   public authorise(token64: string) {

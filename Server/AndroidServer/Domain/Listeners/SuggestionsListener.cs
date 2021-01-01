@@ -80,8 +80,6 @@ namespace AndroidServer.Domain.Listeners
 
             var now = DateTime.UtcNow;
 
-            Console.WriteLine($"Suggestion reset tick: current day {now.DayOfWeek}, required day {(DayOfWeek)weeklyResetWeekday}, current hour {now.TimeOfDay.Hours}, required hour {ResetHour24}. canReset is {canReset}");
-
             if (now.DayOfWeek == (DayOfWeek)weeklyResetWeekday && now.TimeOfDay.Hours == ResetHour24)
             {
                 try

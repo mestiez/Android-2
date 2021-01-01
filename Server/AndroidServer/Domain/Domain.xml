@@ -664,6 +664,21 @@
             Role colour
             </summary>
         </member>
+        <member name="T:AndroidServer.Domain.StatusInfo">
+            <summary>
+            Serialisable Discord user game info
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.StatusInfo.Kind">
+            <summary>
+            Status kind
+            </summary>
+        </member>
+        <member name="P:AndroidServer.Domain.StatusInfo.Status">
+            <summary>
+            Status text
+            </summary>
+        </member>
         <member name="T:AndroidServer.Domain.UiVariableTypeAttribute">
             <summary>
             Applying this attribute to a property will make it show up in the client

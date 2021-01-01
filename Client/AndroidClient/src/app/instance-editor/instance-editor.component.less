@@ -4,12 +4,12 @@
 .instance-editor {
 
   display: grid;
-  grid-template-columns: @sidebar-width 1fr 1fr;
+  grid-template-columns: @sidebar-width 1fr 1fr 140px;
   grid-template-rows: @header-height minmax(0, 1fr) 30%;
   grid-template-areas:
-    "sidebar header             header"
-    "sidebar listeners          listener-settings"
-    "sidebar manual-override    response-filter"
+    "sidebar header             header              system-controls"
+    "sidebar listeners          listener-settings   system-controls"
+    "sidebar manual-override    response-filter     system-controls"
   ;
 
   justify-items: stretch;
@@ -17,6 +17,54 @@
 
   gap: 10px;
   padding: 10px;
+}
+
+.bot-status-editor {
+  grid-area: listeners-start / listeners-start / listener-settings-end / listener-settings-end;
+  width: 100%;
+
+  .status-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+
+  .button {
+    padding: 10px;
+
+    &[selected=true] {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  textarea {
+    resize: none;
+    height: 256px;
+    width: calc(100% - 10px);
+  }
+}
+
+.system-controls {
+  background: rgba(0, 0, 0, 0.1);
+  grid-area: system-controls;
+
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .separator {
+    height: 1px;
+    margin: 5px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .button {
+    height: 48px;
+    margin: 5px;
+  }
 }
 
 .sidebar {

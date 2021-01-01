@@ -27,7 +27,8 @@ namespace RestApi
         private bool shouldShutdown = false;
         private bool isInsideServerRequest = false;
 
-        public List<string> AllowedOrigins { get; } = new() { "*" };
+        public bool UseOriginFilter { get; set; } = true;
+        public List<string> AllowedOrigins { get; } = new();
         public List<RequestFilter> RequestFilters { get; } = new();
 
         public RestServer(string address)
@@ -109,13 +110,17 @@ namespace RestApi
             response.ContentType = "application/json";
             var domain = request.UrlReferrer?.ToString();
 
-            if (string.IsNullOrWhiteSpace(domain) || !AllowedOrigins.Any(a => MatchingRoute(a, domain)))
+            if (UseOriginFilter)
             {
-                response.StatusCode = (int)HttpStatusCode.Forbidden;
-                response.StatusDescription = "Origin not allowed";
-                response.Close();
-                isInsideServerRequest = false;
-                return;
+                var emptyOrigin = string.IsNullOrWhiteSpace(domain);
+                if (emptyOrigin || (!AllowedOrigins.Contains("*") && !AllowedOrigins.Any(a => MatchingRoute(a, domain))))
+                {
+                    response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    response.StatusDescription = (emptyOrigin ? "Origin cannot be empty: " : "Origin not allowed: ") + domain;
+                    response.Close();
+                    isInsideServerRequest = false;
+                    return;
+                }
             }
 
             if (domain.EndsWith("/"))

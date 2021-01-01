@@ -37,8 +37,7 @@
         </ng-container>
 
         <div class="listener-entry" *ngFor="let listener of selectedChannelListeners" [title]="listener.id"
-          [attr.global]="listener.globalListener"
-          [attr.active]="listener.active"
+          [attr.global]="listener.globalListener" [attr.active]="listener.active"
           [attr.selected]="selectedListener && selectedListener.id === listener.id" (click)="selectListener(listener)">
           <span>
             {{listener.displayName}}
@@ -206,4 +205,49 @@
       </ng-template>
     </div>
   </ng-container>
+
+  <ng-container *ngIf="showBotStatusEditor">
+    <div class="channel-editor-title">
+      bot status editor
+    </div>
+    <div class="bot-status-editor">
+      <p>
+        The status you apply here will be visible across all guilds!
+      </p>
+      <div class="status-buttons">
+        <div class="button center" [attr.selected]="setStatusType == 'play'" (click)="setStatusType = 'play'">Play...</div>
+        <div class="button center" [attr.selected]="setStatusType == 'watch'" (click)="setStatusType = 'watch'">Watch...</div>
+        <div class="button center" [attr.selected]="setStatusType == 'listen'" (click)="setStatusType = 'listen'">Listen to...</div>
+      </div>
+      <textarea placeholder="enter status text" [(ngModel)]="enteredBotStatus"></textarea>
+      <div class="status-buttons">
+        <div class="button center" (click)="clearStatus()" title="Reset the bot status">Clear status</div>
+        <div></div>
+        <div class="button center" (click)="setStatus()" title="Apply the entered status">Apply status</div>
+      </div>
+    </div>
+  </ng-container>
+  
+
+  <div class="system-controls">
+
+    <div class="button center red" (click)="shutdown()" title="Gracefully shut the back-end down.">
+      POWER DOWN
+    </div>
+
+    <div (click)="leaveGuild();" class="button center red" title="Leave the guild">
+      LEAVE GUILD
+    </div>
+
+    <div (click)="saveToDisk();" class="button center" title="Save the guild to disk">
+      SAVE INSTANCE
+    </div>
+
+    <span class="separator"></span>
+
+    <div (click)="openBotStatusPage()" class="button center" title="Set global bot status">
+      Set status
+    </div>
+
+  </div>
 </div>
