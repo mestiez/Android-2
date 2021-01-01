@@ -49,12 +49,73 @@ namespace Domain
         }
 
         /// <summary>
+        /// Turns a <see cref="TimeSpan"/> into an imprecise readable string
+        /// </summary>
+        public static string TimeSpanToText(TimeSpan span)
+        {
+            if (span.TotalDays >= 1826250)
+                return "an unreasonably long time";
+
+            //acceptable estimates
+            const int daysInYear = 365;
+            const int daysInMonth = 30;
+            const int daysInWeek = 7;
+
+            if (span.TotalDays >= daysInYear - 30)
+            {
+                int years = (int)Math.Ceiling(span.TotalDays / daysInYear);
+                return years + ((years == 1) ? " year" : " years");
+            }
+
+            if (span.TotalDays >= daysInMonth - 5)
+            {
+                int months = (int)Math.Ceiling(span.TotalDays / daysInMonth);
+                return months + ((months == 1) ? " month" : " months");
+            }
+
+            if (span.TotalDays >= daysInWeek - 1)
+            {
+                int weeks = (int)Math.Ceiling(span.TotalDays / daysInWeek);
+                return weeks + ((weeks == 1) ? " week" : " weeks");
+            }
+
+            if (span.TotalDays >= 0.9f)
+            {
+                int days = (int)Math.Ceiling(span.TotalDays);
+                return days + ((days == 1) ? " day" : " days");
+            }
+
+            if (span.TotalHours >= 0.9f)
+            {
+                int hours = (int)Math.Ceiling(span.TotalHours);
+                return hours + "h";
+            }
+
+            if (span.TotalMinutes >= 1)
+            {
+                int mins = (int)Math.Ceiling(span.TotalMinutes);
+                return mins + "m";
+            }
+
+            if (span.TotalSeconds >= 1)
+            {
+                int secs = (int)Math.Ceiling(span.TotalSeconds);
+                return secs + "s";
+            }
+
+            return span.Milliseconds + " ms";
+        }
+
+        /// <summary>
         /// Get a <see cref="TimeSpan"/> from a string. Supports any whole number followed by second, minute, hour, day, week, or year
         /// </summary>
         /// <returns>The parsed time duration, or null when none is found</returns>
         public static TimeSpan? ParseTimeFromText(string text)
         {
             var duration = TimeSpan.Zero;
+
+            if (Regex.Match(text, @"((forever)|(indefinitely)|(infinite))").Success)
+                return TimeSpan.MaxValue;
 
             var match = Regex.Match(text, @"(\d+)\s?((second)|(minute)|(hour)|(day)|(week)|(year))s?");
             if (match.Success)

@@ -129,18 +129,20 @@ namespace AndroidServer.Domain
             if (user == null)
                 return;
 
+            bool isInfinite = duration == TimeSpan.MaxValue;
+
             bool userIsAlreadyMuted = MutesByUser.TryGetValue(user.Id, out var entry) && entry != null;
             if (userIsAlreadyMuted)
             {
-                var newExpiration = DateTime.UtcNow + duration;
-                var isLonger = newExpiration > entry.Expiration;
+                var newExpiration = isInfinite ? DateTime.MaxValue : (DateTime.UtcNow + duration);
+                var isLonger = isInfinite || newExpiration > entry.Expiration;
                 entry.Expiration = newExpiration;
                 entry.ChannelID = channel.Id;
                 await channel.SendMessageAsync(isLonger ? "extending mute..." : "shortening mute...");
             }
             else
             {
-                if (MutesByUser.TryAdd(user.Id, new MuteEntry(user.Id, channel.Id, user.Guild.Id, DateTime.UtcNow + duration)))
+                if (MutesByUser.TryAdd(user.Id, new MuteEntry(user.Id, channel.Id, user.Guild.Id, isInfinite ? DateTime.MaxValue : (DateTime.UtcNow + duration))))
                     await channel.SendMessageAsync("muting " + user.Username);
                 else
                 {

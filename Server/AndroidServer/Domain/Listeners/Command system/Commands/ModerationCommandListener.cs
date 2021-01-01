@@ -158,6 +158,27 @@ namespace AndroidServer.Domain.Listeners.Commands
             }
         }
 
+        [Command(CommandAccessLevel.Level1, "list all mutes", "list mutes", "mutes", "who is muted", "who's muted")]
+        public async Task ListAllMutes(CommandParameters parameters)
+        {
+            var mutes = Android.Moderation.MutesByUser;
+            if (mutes.Count == 0)
+            {
+                await parameters.Reply("nobody is muted (excluding manual mutes)");
+                return;
+            }
+            var now = DateTime.UtcNow;
+            string toSend = "at the time of this message...\n";
+            foreach (var item in mutes)
+            {
+                var user = Android.Client.GetUser(item.Key);
+                if (user == null) continue;
+
+                toSend += $"{user.Username}#{user.Discriminator} is muted for {Utilities.TimeSpanToText(item.Value.Expiration - now)}\n";
+            }
+            await parameters.Reply(toSend);
+        }
+
         private async Task SetChannelBan(CommandParameters parameters, bool ban)
         {
             var channels = await Android.Guild.GetChannelsAsync();
