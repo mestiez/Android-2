@@ -82,7 +82,10 @@ namespace AndroidServer.Domain
             var now = DateTime.UtcNow;
             foreach (var pair in copy)
             {
-                var expired = now >= pair.Value.Expiration;
+                if (!MutesByUser.TryGetValue(pair.Key, out var entry)) 
+                    continue;
+
+                var expired = now >= entry.Expiration;
                 if (expired)
                 {
                     var user = await Guild.GetUserAsync(pair.Key);
