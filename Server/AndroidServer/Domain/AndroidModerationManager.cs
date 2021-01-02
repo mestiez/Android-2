@@ -42,6 +42,7 @@ namespace AndroidServer.Domain
         private readonly AndroidInstance instance;
         private IRole mutedRole = null;
         private bool isBusyChecking = false;
+        private bool initialised = false;
 
         /// <summary>
         /// Construct a moderation manager
@@ -57,6 +58,10 @@ namespace AndroidServer.Domain
         /// </summary>
         public void Initialise()
         {
+            if (initialised)
+                return;
+
+            initialised = true;
             timer = new Timer((e) =>
             {
                 if (!isBusyChecking)
@@ -86,8 +91,8 @@ namespace AndroidServer.Domain
                     else
                         MutesByUser.Remove(pair.Key);
                 }
-                isBusyChecking = false;
             }
+            isBusyChecking = false;
         }
 
         /// <summary>
