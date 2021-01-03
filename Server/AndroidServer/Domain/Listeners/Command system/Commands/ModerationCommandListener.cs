@@ -158,7 +158,7 @@ namespace AndroidServer.Domain.Listeners.Commands
             }
         }
 
-        [Command(CommandAccessLevel.Level1, "list all mutes", "list mutes", "mutes", "who is muted", "who's muted")]
+        [Command(CommandAccessLevel.Level1, "list all mutes", "list mutes", "mutes", "who is muted", "who's muted", "show mutes", "show all mutes")]
         public async Task ListAllMutes(CommandParameters parameters)
         {
             var mutes = Android.Moderation.MutesByUser;
@@ -169,7 +169,7 @@ namespace AndroidServer.Domain.Listeners.Commands
             }
             var now = DateTime.UtcNow;
             string toSend = "at the time of this message...\n";
-            foreach (var item in mutes)
+            foreach (var item in mutes.OrderBy(i => i.Value.Expiration.Ticks))
             {
                 var user = Android.Client.GetUser(item.Key);
                 if (user == null) continue;
