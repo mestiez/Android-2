@@ -36,12 +36,10 @@ namespace AndroidServer.Domain
         /// </summary>
         public Dictionary<ulong, MuteEntry> MutesByUser = new Dictionary<ulong, MuteEntry>();
 
-        private System.Timers.Timer timer;
+        private Timer timer;
         private ulong mutedRoleID;
         private readonly AndroidInstance instance;
         private IRole mutedRole = null;
-
-        private bool isBusyChecking = false;
 
         /// <summary>
         /// Construct a moderation manager
@@ -57,14 +55,9 @@ namespace AndroidServer.Domain
         /// </summary>
         public void Initialise()
         {
-            timer = new System.Timers.Timer(TimeSpan.FromSeconds(2).TotalMilliseconds);
-            timer.AutoReset = true;
-            timer.Start();
-            timer.Elapsed += (o, e) =>
-            {
-                if (!isBusyChecking)
-                    Task.Run(CheckExpiredEntries);
-            };
+            timer = new Timer(async (ob) => {
+                await CheckExpiredEntries();
+            }, null, 2000, 1000);
         }
 
         private void RetrieveMutedRole()
@@ -74,10 +67,12 @@ namespace AndroidServer.Domain
 
         private async Task CheckExpiredEntries()
         {
-            if (MutesByUser.Count == 0) return;
-            isBusyChecking = true;
+            if (MutesByUser.Count == 0) 
+                return;
+
             var copy = MutesByUser.ToArray();
             var now = DateTime.UtcNow;
+
             foreach (var pair in copy)
             {
                 if (!MutesByUser.TryGetValue(pair.Key, out var entry))
@@ -92,7 +87,6 @@ namespace AndroidServer.Domain
                 else
                     MutesByUser.Remove(pair.Key);
             }
-            isBusyChecking = false;
         }
 
         /// <summary>
