@@ -112,7 +112,9 @@ namespace AndroidServer.Domain
             foreach (var item in Listeners)
                 item.OnShutdown();
 
+            Moderation.Shutdown();
             Listeners.Clear();
+            Client.MessageReceived -= OnMessageReceived;
         }
 
         private async Task OnMessageReceived(SocketMessage message)

@@ -152,6 +152,14 @@ namespace AndroidServer.Domain
             await SetMuteState(user, true);
         }
 
+        /// <summary>
+        /// Stop the moderation manager
+        /// </summary>
+        public void Shutdown()
+        {
+            timer.Dispose();
+        }
+
         private async Task SetMuteState(IGuildUser user, bool muted)
         {
             if (mutedRole == null)
