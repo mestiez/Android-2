@@ -86,6 +86,7 @@ namespace AndroidServer.Domain.Listeners.Commands
         {
             var users = parameters.SocketMessage.MentionedUsers;
             var role = Android.Guild.GetRole(interrogationRole);
+            var guild = await Android.Client.Rest.GetGuildAsync(Android.GuildID);
 
             if (role == null)
             {
@@ -95,7 +96,7 @@ namespace AndroidServer.Domain.Listeners.Commands
 
             foreach (var item in users)
             {
-                var gu = await Android.Guild.GetUserAsync(item.Id);
+                var gu = await guild.GetUserAsync(item.Id);
                 if (state)
                     await gu.AddRoleAsync(role);
                 else
@@ -184,11 +185,12 @@ namespace AndroidServer.Domain.Listeners.Commands
             var channels = await Android.Guild.GetChannelsAsync();
             var users = parameters.SocketMessage.MentionedUsers;
             var mentionedChannels = parameters.SocketMessage.MentionedChannels;
+            var guild = await Android.Client.Rest.GetGuildAsync(Android.GuildID);
 
             foreach (var channel in mentionedChannels)
                 foreach (var user in users)
                 {
-                    var guildUser = await Android.Guild.GetUserAsync(user.Id);
+                    var guildUser = await guild.GetUserAsync(user.Id);
                     var result = await Android.Moderation.SetChannelBan(channel, guildUser, ban, channels);
                     if (!result)
                         await parameters.Reply($"could not find an appropriate muting role for <#{channel.Id}>");
