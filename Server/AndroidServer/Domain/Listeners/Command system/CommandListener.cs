@@ -175,7 +175,14 @@ namespace AndroidServer.Domain.Listeners.Commands
                     Instance = Android
                 };
 
-                await cmd.Delegate(parameters);
+                try
+                {
+                    await cmd.Delegate(parameters);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("ERROR EXECUTING COMMAND {0}: {1}", alias, e.Message);
+                }
 
                 return;
             }

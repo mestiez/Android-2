@@ -188,9 +188,12 @@ namespace AndroidServer.Domain.Listeners.Commands
             foreach (var channel in mentionedChannels)
                 foreach (var user in users)
                 {
-                    var result = await Android.Moderation.SetChannelBan(channel, user as IGuildUser, ban, channels);
+                    var guildUser = await Android.Guild.GetUserAsync(user.Id);
+                    var result = await Android.Moderation.SetChannelBan(channel, guildUser, ban, channels);
                     if (!result)
                         await parameters.Reply($"could not find an appropriate muting role for <#{channel.Id}>");
+                    else
+                        await parameters.Reply($"{user.Username} has been banned from <#{channel.Id}>");
                 }
         }
     }

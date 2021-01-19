@@ -213,6 +213,11 @@
             Mute a user
             </summary>
         </member>
+        <member name="M:AndroidServer.Domain.AndroidModerationManager.Shutdown">
+            <summary>
+            Stop the moderation manager
+            </summary>
+        </member>
         <member name="M:AndroidServer.Domain.AndroidModerationManager.SetChannelBan(Discord.IGuildChannel,Discord.IGuildUser,System.Boolean,System.Collections.Generic.IEnumerable{Discord.IGuildChannel})">
             <summary>
             Set a channel specific ban. This will fail if there is no role that exists specifically for this channel ban
@@ -241,6 +246,11 @@
         <member name="F:AndroidServer.Domain.AndroidService.AndroidInstances">
             <summary>
             All existing Android instances
+            </summary>
+        </member>
+        <member name="F:AndroidServer.Domain.AndroidService.Mail">
+            <summary>
+            Use to send mail
             </summary>
         </member>
         <member name="M:AndroidServer.Domain.AndroidService.#ctor">
@@ -396,6 +406,11 @@
         <member name="T:AndroidServer.Domain.Listeners.Commands.ModerationCommandListener">
             <summary>
             All moderation commands. Also where the mute role is configured by the client
+            </summary>
+        </member>
+        <member name="T:AndroidServer.Domain.Listeners.Commands.ZooiCommandListener">
+            <summary>
+            Commands die alleen jij kan uitvoeren
             </summary>
         </member>
         <member name="T:AndroidServer.Domain.Listeners.ForbiddenWordListener">
