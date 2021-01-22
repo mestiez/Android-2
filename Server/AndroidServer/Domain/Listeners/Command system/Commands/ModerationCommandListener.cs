@@ -195,7 +195,7 @@ namespace AndroidServer.Domain.Listeners.Commands
                     if (!result)
                         await parameters.Reply($"could not find an appropriate muting role for <#{channel.Id}>");
                     else
-                        await parameters.Reply($"{user.Username} has been banned from <#{channel.Id}>");
+                        await parameters.Reply($"{user.Username} has been {(ban ? "banned" : "unbanned")} from <#{channel.Id}>");
                 }
         }
     }
