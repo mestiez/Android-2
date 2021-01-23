@@ -55,7 +55,8 @@ namespace AndroidServer.Domain
         /// </summary>
         public void Initialise()
         {
-            timer = new Timer(async (ob) => {
+            timer = new Timer(async (ob) =>
+            {
                 await CheckExpiredEntries();
             }, null, 2000, 1000);
         }
@@ -67,11 +68,12 @@ namespace AndroidServer.Domain
 
         private async Task CheckExpiredEntries()
         {
-            if (MutesByUser.Count == 0) 
+            if (MutesByUser.Count == 0)
                 return;
 
             var copy = MutesByUser.ToArray();
             var now = DateTime.UtcNow;
+            Discord.Rest.RestGuild guild = null;
 
             foreach (var pair in copy)
             {
@@ -81,7 +83,10 @@ namespace AndroidServer.Domain
                 var expired = now >= entry.Expiration;
                 if (!expired) continue;
 
-                var user = await Guild.GetUserAsync(pair.Key);
+                if (guild == null)
+                    guild = await instance.Client.Rest.GetGuildAsync(Guild.Id);
+
+                var user = await guild.GetUserAsync(pair.Key);
                 if (user != null)
                     await Unmute(user);
                 else

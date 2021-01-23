@@ -136,9 +136,12 @@ namespace AndroidServer.Domain.Listeners.Commands
             if (!parsedDuration.HasValue)
                 await parameters.Reply("no duration specified, falling back to " + DefaultMuteDurationInMinutes + " minutes");
 
+            var guild = await Android.Client.Rest.GetGuildAsync(Android.GuildID);
+
             foreach (var user in users)
             {
-                await Android.Moderation.Mute(user as IGuildUser, channel as ITextChannel, duration);
+                var gU = await guild.GetUserAsync(user.Id);
+                await Android.Moderation.Mute(gU, channel as ITextChannel, duration);
             }
         }
 
@@ -146,6 +149,7 @@ namespace AndroidServer.Domain.Listeners.Commands
         public async Task Unmute(CommandParameters parameters)
         {
             var users = parameters.SocketMessage.MentionedUsers;
+            var guild = await Android.Client.Rest.GetGuildAsync(Android.GuildID);
 
             if (users == null || users.Count == 0)
             {
@@ -155,7 +159,8 @@ namespace AndroidServer.Domain.Listeners.Commands
 
             foreach (var user in users)
             {
-                await Android.Moderation.Unmute(user as IGuildUser);
+                var gU = await guild.GetUserAsync(user.Id);
+                await Android.Moderation.Unmute(gU);
             }
         }
 
