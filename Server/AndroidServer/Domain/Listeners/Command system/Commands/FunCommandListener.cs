@@ -33,6 +33,7 @@ namespace AndroidServer.Domain.Listeners.Commands
         public async Task Maths(CommandParameters parameters)
         {
             var isTyping = parameters.SocketMessage.Channel.EnterTypingState();
+
             try
             {
                 var formula = MathParse.Parse(parameters.ContentWithoutTriggerAndCommand);
@@ -44,10 +45,8 @@ namespace AndroidServer.Domain.Listeners.Commands
             {
                 await parameters.Reply("i don't understand");
             }
-            finally
-            {
-                isTyping?.Dispose();
-            }
+
+            isTyping?.Dispose();
         }
 
         [Command(CommandAccessLevel.Level2, "what is", "whats", "what's", "define", "what is the definition of")]
