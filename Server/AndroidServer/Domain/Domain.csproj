@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.2.0" />
+    <PackageReference Include="MathParse" Version="1.0.0" />
     <PackageReference Include="shortid" Version="3.0.0" />
   </ItemGroup>
 

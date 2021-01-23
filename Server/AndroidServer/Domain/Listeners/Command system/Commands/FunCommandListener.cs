@@ -1,7 +1,9 @@
 ﻿using Discord.WebSocket;
 using Domain;
+using Maths;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,6 +27,27 @@ namespace AndroidServer.Domain.Listeners.Commands
         public async Task Lego(CommandParameters parameters)
         {
             await parameters.Reply("https://i.imgur.com/YsUVChu.png");
+        }
+
+        [Command(CommandAccessLevel.Level2, "evaluate", "calculate")]
+        public async Task Maths(CommandParameters parameters)
+        {
+            var isTyping = parameters.SocketMessage.Channel.EnterTypingState();
+            try
+            {
+                var formula = MathParse.Parse(parameters.ContentWithoutTriggerAndCommand);
+                var result = formula.Evaluate(0);
+
+                await parameters.Reply($"{parameters.ContentWithoutTriggerAndCommand} = {result.ToString(CultureInfo.InvariantCulture)}");
+            }
+            catch (Exception)
+            {
+                await parameters.Reply("i don't understand");
+            }
+            finally
+            {
+                isTyping?.Dispose();
+            }
         }
 
         [Command(CommandAccessLevel.Level2, "what is", "whats", "what's", "define", "what is the definition of")]
