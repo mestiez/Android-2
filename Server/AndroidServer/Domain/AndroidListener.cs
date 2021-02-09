@@ -122,8 +122,11 @@ namespace AndroidServer.Domain
         protected virtual void OnEnable() { }
         /// <summary>
         /// Called when this listener is disabled
-        /// </summary>
         protected virtual void OnDisable() { }
+        /// <summary>
+        /// Called every hour for every listener
+        /// </summary>
+        public virtual Task EveryHour() { return Task.CompletedTask; }
         /// <summary>
         /// Called when a property of this listener is changed by the client
         /// </summary>

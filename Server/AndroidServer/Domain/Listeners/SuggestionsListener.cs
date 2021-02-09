@@ -49,7 +49,6 @@ namespace AndroidServer.Domain.Listeners
             }
         }
 
-        private readonly Timer timer = new Timer();
         private bool canReset = true;
         private int weeklyResetWeekday = 2;
         private int resetHour24 = 12;
@@ -64,20 +63,19 @@ namespace AndroidServer.Domain.Listeners
 
             Android.Client.ReactionAdded += OnReactionAdd;
             Android.Client.ReactionRemoved += OnReactionRemoved;
-
-            timer.Interval = TimeSpan.FromHours(1).TotalMilliseconds;
-
-            timer.Elapsed += CheckForReset;
-
-            timer.Start();
-            timer.Enabled = true;
         }
 
-        private async void CheckForReset(object o, ElapsedEventArgs ee)
+        public override async Task EveryHour()
+        {
+            await CheckForReset();
+        }
+
+        private async Task CheckForReset()
         {
             if (!Android.Active || !Active)
                 return;
 
+            Console.WriteLine("Suggestion reset attempt start");
             var now = DateTime.UtcNow;
 
             if (now.DayOfWeek == (DayOfWeek)weeklyResetWeekday && now.TimeOfDay.Hours == ResetHour24)
@@ -100,16 +98,6 @@ namespace AndroidServer.Domain.Listeners
             else canReset = true;
         }
 
-        protected override void OnEnable()
-        {
-            timer.Enabled = true;
-        }
-
-        protected override void OnDisable()
-        {
-            timer.Enabled = false;
-        }
-
         public override void OnDelete()
         {
             OnShutdown();
@@ -126,11 +114,8 @@ namespace AndroidServer.Domain.Listeners
 
         public override void OnShutdown()
         {
-            timer.Stop();
             Android.Client.ReactionAdded -= OnReactionAdd;
             Android.Client.ReactionRemoved -= OnReactionRemoved;
-            timer.Elapsed -= CheckForReset;
-            timer.Dispose();
         }
 
         private async Task OnReactionRemoved(Cacheable<IUserMessage, ulong> message, ISocketMessageChannel channel, SocketReaction reaction)

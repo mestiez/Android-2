@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AndroidServer.Domain
@@ -47,6 +48,7 @@ namespace AndroidServer.Domain
 
         private readonly Dictionary<ulong, Question> waitingForReply = new();
         private readonly TimeSpan waitingExpiration = TimeSpan.FromMinutes(1);
+        private readonly Timer timer;
 
         /// <summary>
         /// Construct an instance
@@ -63,6 +65,11 @@ namespace AndroidServer.Domain
             Moderation = new AndroidModerationManager(this);
 
             Moderation.Initialise();
+
+            timer = new Timer(async (ob) =>
+            {
+                await InvokeHourlyTick();
+            }, null, 2000, (int)TimeSpan.FromHours(1).TotalMilliseconds);
         }
 
         /// <summary>
@@ -115,6 +122,15 @@ namespace AndroidServer.Domain
             Moderation.Shutdown();
             Listeners.Clear();
             Client.MessageReceived -= OnMessageReceived;
+        }
+
+        private async Task InvokeHourlyTick()
+        {
+            Console.WriteLine("Hourly tick");
+            foreach (var listener in Listeners)
+            {
+                await listener.EveryHour();
+            }
         }
 
         private async Task OnMessageReceived(SocketMessage message)
