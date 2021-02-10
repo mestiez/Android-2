@@ -126,9 +126,17 @@ namespace AndroidServer.Domain
 
         private async Task InvokeHourlyTick()
         {
+            if (!Active)
+                return;
+
             Console.WriteLine("Hourly tick");
+            
             foreach (var listener in Listeners)
             {
+                if (!Active)
+                    return;
+                if (!listener.Active)
+                    continue;
                 await listener.EveryHour();
             }
         }

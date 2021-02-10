@@ -163,9 +163,10 @@
             Called when this listener is enabled
             </summary>
         </member>
-        <member name="M:AndroidServer.Domain.AndroidListener.OnDisable">
+        <!-- Badly formed XML comment ignored for member "M:AndroidServer.Domain.AndroidListener.OnDisable" -->
+        <member name="M:AndroidServer.Domain.AndroidListener.EveryHour">
             <summary>
-            Called when this listener is disabled
+            Called every hour for every listener
             </summary>
         </member>
         <member name="M:AndroidServer.Domain.AndroidListener.OnPropertyChange(System.String,System.Object)">
