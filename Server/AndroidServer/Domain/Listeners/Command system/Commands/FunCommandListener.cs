@@ -1,12 +1,14 @@
 ﻿using Discord.WebSocket;
 using Domain;
-using Maths;
+using MathsParser;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+using Parser = MathsParser.MathsParser;
 
 namespace AndroidServer.Domain.Listeners.Commands
 {
@@ -29,25 +31,38 @@ namespace AndroidServer.Domain.Listeners.Commands
             await parameters.Reply("https://i.imgur.com/YsUVChu.png");
         }
 
-        [Command(CommandAccessLevel.Level2, "evaluate", "calculate")]
+        [Command(CommandAccessLevel.Level2, "evaluate", "calculate", "eval", "calc")]
         public async Task Maths(CommandParameters parameters)
         {
             try
             {
-                var formula = MathParse.Parse(parameters.ContentWithoutTriggerAndCommand);
-                var result = formula.Evaluate(0);
+                var result = Parser.Parse(parameters.ContentWithoutTriggerAndCommand.ToLower());
 
                 await parameters.Reply($"{parameters.ContentWithoutTriggerAndCommand} = {result.ToString(CultureInfo.InvariantCulture)}");
             }
+            catch (InfinityException)
+            {
+                await parameters.Reply("infinity");
+            }
+            catch (NaNException)
+            {
+                await parameters.Reply("the result was not a number");
+            }
             catch (Exception)
             {
-                await parameters.Reply("i don't understand");
+                await parameters.Reply("i don't understand the expression");
             }
         }
 
         [Command(CommandAccessLevel.Level2, "what is", "whats", "what's", "define", "what is the definition of")]
         public async Task Define(CommandParameters parameters)
         {
+            if (parameters.ContentWithoutTriggerAndCommand.Any(c => char.IsDigit(c)))
+            {
+                await Maths(parameters);
+                return;
+            }
+
             //https://github.com/meetDeveloper/googleDictionaryAPI
             const string api = @"https://api.dictionaryapi.dev/api/v1/entries/en/";
             var isTyping = parameters.SocketMessage.Channel.EnterTypingState();
