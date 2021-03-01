@@ -56,7 +56,7 @@ namespace Domain
             var res = mentions.Replace(input, (m) => m.Value[2..m.Value.IndexOf('>')]);
             return res;
         }
-        private static readonly Regex mentions = new Regex(@"<.\d+?>", RegexOptions.Compiled);
+        private static readonly Regex mentions = new Regex(@"<.+?\d+?>", RegexOptions.Compiled);
 
         /// <summary>
         /// Turns a <see cref="TimeSpan"/> into an imprecise readable string

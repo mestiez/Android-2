@@ -836,6 +836,11 @@
             Pick random entry from an <see cref="T:System.Collections.Generic.IList`1"/>
             </summary>
         </member>
+        <member name="M:Domain.Utilities.ReplaceMentions(System.String)">
+            <summary>
+            Replaces mentions with their canonical representation
+            </summary>
+        </member>
         <member name="M:Domain.Utilities.TimeSpanToText(System.TimeSpan)">
             <summary>
             Turns a <see cref="T:System.TimeSpan"/> into an imprecise readable string
