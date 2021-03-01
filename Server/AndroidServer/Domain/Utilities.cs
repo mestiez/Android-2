@@ -49,6 +49,16 @@ namespace Domain
         }
 
         /// <summary>
+        /// Replaces mentions with their canonical representation
+        /// </summary>
+        public static string ReplaceMentions(string input)
+        {
+            var res = mentions.Replace(input, (m) => m.Value[2..m.Value.IndexOf('>')]);
+            return res;
+        }
+        private static readonly Regex mentions = new Regex(@"<.\d+?>", RegexOptions.Compiled);
+
+        /// <summary>
         /// Turns a <see cref="TimeSpan"/> into an imprecise readable string
         /// </summary>
         public static string TimeSpanToText(TimeSpan span)

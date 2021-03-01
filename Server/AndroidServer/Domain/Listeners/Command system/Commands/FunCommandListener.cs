@@ -38,7 +38,8 @@ namespace AndroidServer.Domain.Listeners.Commands
             {
                 var result = Parser.Parse(parameters.ContentWithoutTriggerAndCommand.ToLower());
 
-                await parameters.Reply($"{parameters.ContentWithoutTriggerAndCommand} = {result.ToString(CultureInfo.InvariantCulture)}");
+                var safeReply = Utilities.ReplaceMentions(parameters.ContentWithoutTriggerAndCommand);
+                await parameters.Reply($"{safeReply} = {result.ToString(CultureInfo.InvariantCulture)}");
             }
             catch (InfinityException)
             {
@@ -84,8 +85,9 @@ namespace AndroidServer.Domain.Listeners.Commands
                     return;
                 }
                 var reply = $@"**{result.word}**: {result.meaning.First().Value.First().definition}";
+                var safeReply = Utilities.ReplaceMentions(reply);
                 isTyping?.Dispose();
-                await parameters.SocketMessage.Channel.SendMessageAsync(reply);
+                await parameters.SocketMessage.Channel.SendMessageAsync(safeReply);
             }
             catch (Exception e)
             {
