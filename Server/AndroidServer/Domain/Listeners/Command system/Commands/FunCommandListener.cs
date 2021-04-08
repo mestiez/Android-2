@@ -99,7 +99,7 @@ namespace AndroidServer.Domain.Listeners.Commands
             isTyping?.Dispose();
         }
 
-        [Command(CommandAccessLevel.Level3, "say")]
+        [Command(CommandAccessLevel.Level4, "say")]
         public async Task Say(CommandParameters parameters)
         {
             var message = parameters.ContentWithoutTriggerAndCommand;
