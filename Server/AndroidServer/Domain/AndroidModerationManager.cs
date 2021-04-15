@@ -103,6 +103,7 @@ namespace AndroidServer.Domain
                 return;
 
             ulong id = user.Id;
+            await SetMuteState(user, false);
 
             if (!MutesByUser.TryGetValue(id, out var entry) || entry == null)
                 return;
@@ -120,7 +121,6 @@ namespace AndroidServer.Domain
                 return;
             }
 
-            await SetMuteState(user, false);
             var channel = instance.Client.GetChannel(entry.ChannelID) as ITextChannel;
             await channel.SendMessageAsync("unmuting " + user.Username);
         }
