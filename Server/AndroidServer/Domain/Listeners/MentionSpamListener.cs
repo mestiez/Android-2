@@ -19,6 +19,7 @@ namespace AndroidServer.Domain.Listeners
 
         public override async Task OnMessage(SocketMessage message)
         {
+            Console.WriteLine(message.MentionedUsers.Count + " mentions in this message");
             if (message.MentionedUsers.Count > MentionCountThreshold)
                 await Punish(message);
         }
