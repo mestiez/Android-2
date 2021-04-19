@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AndroidServer.Domain.Listeners
@@ -15,13 +16,23 @@ namespace AndroidServer.Domain.Listeners
         [UiVariableType(VariableType.Number)]
         public float MuteDurationInHours { get; set; } = 24;
 
+        private readonly Regex tester = new Regex(@"<@\d+>");
+
         public MentionSpamListener(AndroidInstance android, ulong channelID) : base(android, channelID) { }
 
         public override async Task OnMessage(SocketMessage message)
         {
-            Console.WriteLine(message.MentionedUsers.Count + " mentions in this message");
-            if (message.MentionedUsers.Count > MentionCountThreshold)
+            if (CountMentions(message.Content) > MentionCountThreshold)
                 await Punish(message);
+        }
+
+        private int CountMentions(string content)
+        {
+            if (content.Length <= 4) //min ID length
+                return 0;
+
+            var matches = tester.Matches(content);
+            return matches.Count;
         }
 
         private async Task Punish(SocketMessage message)
