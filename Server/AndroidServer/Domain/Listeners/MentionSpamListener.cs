@@ -16,14 +16,14 @@ namespace AndroidServer.Domain.Listeners
         [UiVariableType(VariableType.Number)]
         public float MuteDurationInHours { get; set; } = 24;
 
-        private readonly Regex tester = new Regex(@"<@\d+>");
+        private readonly Regex tester = new Regex(@"<@!?\d+>");
 
         public MentionSpamListener(AndroidInstance android, ulong channelID) : base(android, channelID) { }
 
         public override async Task OnMessage(SocketMessage message)
         {
             var c = CountMentions(message.Content);
-            Console.WriteLine($"message has {c} mentions");
+            Console.WriteLine($"message \"{message.Content}\" has {c} mentions");
             if (c > MentionCountThreshold)
                 await Punish(message);
         }
