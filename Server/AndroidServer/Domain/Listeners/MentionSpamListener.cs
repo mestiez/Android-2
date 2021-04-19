@@ -22,7 +22,9 @@ namespace AndroidServer.Domain.Listeners
 
         public override async Task OnMessage(SocketMessage message)
         {
-            if (CountMentions(message.Content) > MentionCountThreshold)
+            var c = CountMentions(message.Content);
+            Console.WriteLine($"message has {c} mentions");
+            if (c > MentionCountThreshold)
                 await Punish(message);
         }
 
