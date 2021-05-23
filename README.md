@@ -1,6 +1,6 @@
 # Android 2
 
-Android 2 is a complete rewrite of Android 1, a Discord bot written for the People Playground Discord server.
+Android 2 is a complete rewrite of Android 1, a Discord bot
 
 ![android preview](https://i.imgur.com/n3oKwy9.png)
 
